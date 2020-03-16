@@ -7,7 +7,7 @@ namespace StockScore
 {
     public class API_Keys
     {
-        string Google_Key = "";
+        string Google_Key = "a";
         string AV_Key = "";
         string MailGun_Key = "";
     }
