@@ -22,7 +22,7 @@ namespace StockScore.Controllers
         // GET: User_Stocks
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.User_Stocks.Include(u => u.IdentityUser);
+            var applicationDbContext = _context.User_Stocks.Include(u => u.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace StockScore.Controllers
             }
 
             var user_Stocks = await _context.User_Stocks
-                .Include(u => u.IdentityUser)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (user_Stocks == null)
             {
@@ -131,7 +131,7 @@ namespace StockScore.Controllers
             }
 
             var user_Stocks = await _context.User_Stocks
-                .Include(u => u.IdentityUser)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (user_Stocks == null)
             {

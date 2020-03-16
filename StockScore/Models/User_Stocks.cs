@@ -15,9 +15,8 @@ namespace StockScore.Models
         public string StockSymbol { get; set; }
         public string PurchaseDate { get; set; }
 
-        [ForeignKey("IdentityUser")]
-        [Display(Name = "Identity User")]
-        public string UserId { get; set; }
-        public IdentityUser IdentityUser { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
-}
+} 

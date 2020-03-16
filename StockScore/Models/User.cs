@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace StockScore.Models
 {
-    public class Favorites
+    public class User
     {
         [Key]
         public int Id { get; set; }
-        public string StockSymbol { get; set; }
-        public string TimeFrame { get; set; }
-        //Do they want to buy for a week, month, or year?
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
-        [ForeignKey("User")]
-        [Display(Name = "User")]
-        public int UserId { get; set; }
-        public User User { get; set; }
+        [ForeignKey("IdentityUser")]
+        [Display(Name = "Identity User")]
+        public string UserId { get; set; }
+        public IdentityUser IdentityUser { get; set; }
+
     }
 }

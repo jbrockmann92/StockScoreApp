@@ -22,7 +22,7 @@ namespace StockScore.Controllers
         // GET: Favorites
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Favorites.Include(f => f.IdentityUser);
+            var applicationDbContext = _context.Favorites.Include(f => f.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace StockScore.Controllers
             }
 
             var favorites = await _context.Favorites
-                .Include(f => f.IdentityUser)
+                .Include(f => f.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (favorites == null)
             {
@@ -131,7 +131,7 @@ namespace StockScore.Controllers
             }
 
             var favorites = await _context.Favorites
-                .Include(f => f.IdentityUser)
+                .Include(f => f.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (favorites == null)
             {
