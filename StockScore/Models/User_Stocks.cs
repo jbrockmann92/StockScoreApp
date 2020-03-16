@@ -11,13 +11,13 @@ namespace StockScore.Models
     public class User_Stocks
     {
         [Key]
-        int Id { get; set; }
-        string StockSymbol { get; set; }
-        string PurchaseDate { get; set; }
+        public int Id { get; set; }
+        public string StockSymbol { get; set; }
+        public string PurchaseDate { get; set; }
 
         [ForeignKey("IdentityUser")]
         [Display(Name = "Identity User")]
-        string UserId { get; set; }
+        public string UserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
     }
 }
