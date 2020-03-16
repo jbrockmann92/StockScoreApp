@@ -1,0 +1,49 @@
+﻿@model StockScore.Models.Top_Stocks
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Top_Stocks</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="numberOne" class="control-label"></label>
+                <input asp-for="numberOne" class="form-control" />
+                <span asp-validation-for="numberOne" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="numberTwo" class="control-label"></label>
+                <input asp-for="numberTwo" class="form-control" />
+                <span asp-validation-for="numberTwo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="numberThree" class="control-label"></label>
+                <input asp-for="numberThree" class="form-control" />
+                <span asp-validation-for="numberThree" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="numberFour" class="control-label"></label>
+                <input asp-for="numberFour" class="form-control" />
+                <span asp-validation-for="numberFour" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

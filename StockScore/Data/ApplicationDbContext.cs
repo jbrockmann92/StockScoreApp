@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using StockScore.Models;
 
 namespace StockScore.Data
 {
@@ -27,5 +28,13 @@ namespace StockScore.Data
                     }
                 );
         }
+
+        public DbSet<StockScore.Models.Favorites> Favorites { get; set; }
+
+        public DbSet<StockScore.Models.Searches> Searches { get; set; }
+
+        public DbSet<StockScore.Models.Top_Stocks> Top_Stocks { get; set; }
+
+        public DbSet<StockScore.Models.User_Stocks> User_Stocks { get; set; }
     }
 }
