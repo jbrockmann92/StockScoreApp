@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using StockScore.Data;
 using StockScore.Models;
 
+using RestSharp;
+using RestSharp.Authenticators;
+
 namespace StockScore.Controllers
 {
     public class UsersController : Controller
@@ -34,6 +37,7 @@ namespace StockScore.Controllers
             }
             userViewModel.User = user;
             userViewModel.Stocks = new List<User_Stocks>();
+            //Need to do this differently, but it's a band aid for now
 
             //Something with await here if possible
 
@@ -45,10 +49,12 @@ namespace StockScore.Controllers
         //return the view that searches for the symbol using their parameters
         public async Task<IActionResult> Index(UserViewModel user)
         {
-            Searches search = new Searches();
-            search.Symbol = user.Search.Symbol;
-            search.TimeFrame = user.Search.TimeFrame;
-            search.UserId = user.User.Id;
+            Searches search = new Searches
+            {
+                Symbol = user.Search.Symbol,
+                TimeFrame = user.Search.TimeFrame,
+                UserId = user.User.Id
+            };
             search.Score = getStockScore(search);
 
             _context.Searches.Add(search);
