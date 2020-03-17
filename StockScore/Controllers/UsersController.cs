@@ -29,14 +29,15 @@ namespace StockScore.Controllers
             var applicationDbContext = _context.User.Include(u => u.IdentityUser);
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userViewModel = new UserViewModel();
+            userViewModel.User = new User();
 
             var user = _context.User.FirstOrDefault(a => a.UserId == userId);
             if (user is null)
             {
                 return RedirectToAction("Create");
             }
-            userViewModel.User = user;
             userViewModel.Stocks = new List<User_Stocks>();
+            userViewModel.User.FirstName = user.FirstName;
             //Need to do this differently, but it's a band aid for now
 
             //Something with await here if possible
@@ -49,12 +50,13 @@ namespace StockScore.Controllers
         //return the view that searches for the symbol using their parameters
         public async Task<IActionResult> Index(UserViewModel user)
         {
-            Searches search = new Searches
-            {
-                Symbol = user.Search.Symbol,
-                TimeFrame = user.Search.TimeFrame,
-                UserId = user.User.Id
-            };
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Searches search = new Searches();
+            search.Symbol = user.Search.Symbol;
+            search.TimeFrame = user.Search.TimeFrame;
+            search.UserId = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
+            //Not great naming convention here. Change if possible
+
             search.Score = getStockScore(search);
 
             _context.Searches.Add(search);
@@ -200,7 +202,7 @@ namespace StockScore.Controllers
 
         public int getStockScore(Searches search)
         {
-            int score;
+            int score = 0; //change later
 
             //API call
             //Web Crawler/Google search
@@ -208,6 +210,12 @@ namespace StockScore.Controllers
 
             //Logic to compare them and assign that total to the score int
             //Return a letter grade instead?
+
+            var client = new RestClient("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=" + APIKeys.AVKey);
+
+            var request = new RestRequest("statuses/home_timeline.json", DataFormat.Json);
+
+            var response = client.Get(request);
 
             return score;
         }

@@ -9,17 +9,24 @@
 
 </head>
 <body>
-    <div>
-        <label asp-for="Search.Symbol">Please enter a stock Symbol you'd like a score for</label>
-        <input asp-for="Search.Symbol" class="form-control" />
-    </div>
-    <div>
-        <label asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Month, or Year</label>
-        <input asp-for="Search.TimeFrame" class="form-control" />
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </div>
+    <form asp-action="Index">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            <label asp-for="Search.Symbol">Please enter a stock Symbol you'd like a score for</label>
+            <input asp-for="Search.Symbol" class="form-control" />
+        </div>
+        <div>
+            <label asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Month, or Year</label>
+            <input asp-for="Search.TimeFrame" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="User.UserId" class="control-label"></label>
+            <select asp-for="User.UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
     @*Might want to get parameters from them here. Like day, month, year, etc.*@
 
     @foreach (var item in Model.Stocks)
