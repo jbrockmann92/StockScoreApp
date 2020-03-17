@@ -25,14 +25,16 @@ namespace StockScore.Controllers
         {
             var applicationDbContext = _context.User.Include(u => u.IdentityUser);
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userViewModel = new UserViewModel();
 
             var user = _context.User.FirstOrDefault(a => a.UserId == userId);
             if (user is null)
             {
                 return RedirectToAction("Create");
             }
+            userViewModel.User = user;
 
-            return View(await applicationDbContext.ToListAsync());
+            return View(userViewModel);
         }
 
         // GET: Users/Details/5
