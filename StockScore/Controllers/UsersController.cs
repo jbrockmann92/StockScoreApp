@@ -33,9 +33,33 @@ namespace StockScore.Controllers
                 return RedirectToAction("Create");
             }
             userViewModel.User = user;
+            userViewModel.Stocks = new List<User_Stocks>();
+
+            //Something with await here if possible
 
             return View(userViewModel);
         }
+
+        [HttpPost]
+        //Should be able to have post method here where I assign the stock symbol they entered and then
+        //return the view that searches for the symbol using their parameters
+        public async Task<IActionResult> Index(UserViewModel user)
+        {
+            Searches search = new Searches();
+            search.Symbol = user.Search.Symbol;
+            search.TimeFrame = user.Search.TimeFrame;
+            search.UserId = user.User.Id;
+            search.Score = getStockScore(search);
+
+            _context.Searches.Add(search);
+            await _context.SaveChangesAsync();
+            //If I'm going to add the whole search, I need to have the api call and take in the parameters
+            //on the Index page. Seems possible
+
+            return RedirectToAction("Index", "Searches", search);
+            //Probably right
+        }
+
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -166,6 +190,20 @@ namespace StockScore.Controllers
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.Id == id);
+        }
+
+        public int getStockScore(Searches search)
+        {
+            int score;
+
+            //API call
+            //Web Crawler/Google search
+            //Positive and negative words(??) to test against
+
+            //Logic to compare them and assign that total to the score int
+            //Return a letter grade instead?
+
+            return score;
         }
     }
 }

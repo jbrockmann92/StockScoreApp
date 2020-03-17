@@ -10,8 +10,10 @@ namespace StockScore.Models
     {
         [Key]
         public int Id { get; set; }
+        public string Symbol { get; set; }
         public User User { get; set; }
         public List<User_Stocks> Stocks { get; set; }
+        public Searches Search { get; set; }
 
     }
 }

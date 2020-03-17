@@ -11,9 +11,9 @@ namespace StockScore.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Ticker { get; set; }
+        public string Symbol { get; set; }
         public float Score { get; set; }
-        public string DateSearched { get; set; }
+        public string TimeFrame { get; set; }
 
         [ForeignKey("User")]
         public int UserId { get; set; }

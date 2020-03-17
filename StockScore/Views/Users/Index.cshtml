@@ -3,12 +3,25 @@
 @{
     ViewData["Title"] = "Index";
 }
-<h1>Hello, @Model.User.FirstName  @Model.User.LastName</h1>
+<h2>Hello, @Model.User.FirstName!</h2>
 
 <head>
 
 </head>
 <body>
+    <div>
+        <label asp-for="Search.Symbol">Please enter a stock Symbol you'd like a score for</label>
+        <input asp-for="Search.Symbol" class="form-control" />
+    </div>
+    <div>
+        <label asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Month, or Year</label>
+        <input asp-for="Search.TimeFrame" class="form-control" />
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    @*Might want to get parameters from them here. Like day, month, year, etc.*@
+
     @foreach (var item in Model.Stocks)
     {
         <table>
