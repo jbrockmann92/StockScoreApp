@@ -36,5 +36,7 @@ namespace StockScore.Data
         public DbSet<Top_Stocks> Top_Stocks { get; set; }
 
         public DbSet<User_Stocks> User_Stocks { get; set; }
+
+        public DbSet<StockScore.Models.User> User { get; set; }
     }
 }
