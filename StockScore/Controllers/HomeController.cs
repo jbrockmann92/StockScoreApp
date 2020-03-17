@@ -28,6 +28,7 @@ namespace StockScore.Controllers
             }
             if (User.IsInRole("User"))
             {
+                //Returning false right now. Why?
                 return RedirectToAction("Index", "Users");
             }
             return View();

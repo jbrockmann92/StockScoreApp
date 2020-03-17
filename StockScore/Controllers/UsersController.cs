@@ -91,7 +91,6 @@ namespace StockScore.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -102,9 +101,11 @@ namespace StockScore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,UserId")] User user)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            user.UserId = userId;
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                _context.User.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -211,11 +212,12 @@ namespace StockScore.Controllers
             //Logic to compare them and assign that total to the score int
             //Return a letter grade instead?
 
-            var client = new RestClient("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=" + APIKeys.AVKey);
+            var client = new RestClient("https://www.alphavantage.co/");
 
-            var request = new RestRequest("statuses/home_timeline.json", DataFormat.Json);
+            var request = new RestRequest("query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=" + APIKeys.AVKey, DataFormat.Json);
 
             var response = client.Get(request);
+            var stockData = response.Content.ToList();
 
             return score;
         }
