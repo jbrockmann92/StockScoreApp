@@ -11,6 +11,7 @@ using StockScore.Models;
 
 using RestSharp;
 using RestSharp.Authenticators;
+using System.Text.Json;
 
 namespace StockScore.Controllers
 {
@@ -214,10 +215,11 @@ namespace StockScore.Controllers
 
             var client = new RestClient("https://www.alphavantage.co/");
 
-            var request = new RestRequest("query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=" + APIKeys.AVKey, DataFormat.Json);
+            var request = new RestRequest("query?function=TIME_SERIES_INTRADAY&symbol=" + search.Symbol + "&interval=5min&apikey=" + APIKeys.AVKey, DataFormat.Json);
 
             var response = client.Get(request);
-            var stockData = response.Content.ToList();
+            var stockData = JsonSerializer.Serialize<>(response.Content);
+            //Alpha Vantage can't search by individual month or day, but it does each month for the last 20 years. Should be enough
 
             return score;
         }
