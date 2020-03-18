@@ -24,11 +24,17 @@ namespace StockScore.Controllers
         public async Task<IActionResult> Index(int? id)
         {
             UserViewModel model = new UserViewModel();
+
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             model.Id = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
             model.Searches = _context.Searches.Where(s => s.UserId == model.Id).ToList();
-            model.Search = _context.Searches.Where(s => s.UserId == model.Id).LastOrDefault();
+            model.Search = _context.Searches.Where(s => s.UserId == model.Id).FirstOrDefault();
+
+            if (id != null)
+            {
+                model.Search = _context.Searches.Where(s => s.Id == id).FirstOrDefault();
+            }
 
             return View(model);
         }
