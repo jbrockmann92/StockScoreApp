@@ -7,10 +7,10 @@ namespace StockScore.Models
 {
     public class StockData
     {
-        public string Open { get; set; }
-        public string High { get; set; }
-        public string Low { get; set; }
+        public string open { get; set; }
+        public string high { get; set; }
+        public string low { get; set; }
         public string close { get; set; }
-        public string Volume { get; set; }
+        public string volume { get; set; }
     }
 }
