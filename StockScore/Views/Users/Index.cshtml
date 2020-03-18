@@ -25,9 +25,9 @@
     </form>
     @*Might want to get parameters from them here. Like day, month, year, etc.*@
 
-    @foreach (var item in Model.Stocks)
-    {
-        <table>
+    <table>
+        @foreach (var item in Model.Stocks)
+        {
             <tr>
                 <td>
                     @item.StockSymbol
@@ -37,6 +37,6 @@
                 </td>
                 @*something with the stock's current value here?*@
             </tr>
-        </table>
-    }
+        }
+    </table>
 </body>

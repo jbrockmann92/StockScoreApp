@@ -12,3 +12,24 @@
 @*Quite a bit of logic here I think. Maybe better to do in C# and just display here*@
 
 @*Want to have also a place here where I link back to the search page. Or even a place to search again*@
+<body>
+    @foreach (var item in Model.Searches)
+    {
+        <table>
+            <tr>
+                <td>
+                    @item.Symbol
+                </td>
+                <td>
+                    @item.Score
+                </td>
+                <td>
+                    @item.TimeFrame
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.Id">Search this again</a>
+                </td>
+            </tr>
+        </table>
+    }
+</body>
