@@ -222,16 +222,17 @@ namespace StockScore.Controllers
 
             JObject jobject = JObject.Parse(response.Content);
             var children = jobject.Last.First.Children().ToList();
+            List<int> stockScores = new List<int>();
 
             for (int i = 0; i < children.Count; i++)
             {
-                var open = children[i].First.First.First;
+                int open = int.Parse(children[i].First.First.First.ToString());
+                //Only gets the opening value at the moment, but will probably work for my purposes
+                stockScores.Add(open);
             }
+            //Something like take every 7 and search them against Google articles for 1 week ago, 2 weeks ago, etc.
 
-
-            //Need to make this a list of StockData. How?
-
-            //Alpha Vantage can't search by individual month or day, but it does each month for the last 20 years. Should be enough
+            //Calculate things here. stockScores will have all necessary values by this point
 
             return score;
         }
