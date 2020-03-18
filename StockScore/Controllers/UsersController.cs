@@ -66,12 +66,10 @@ namespace StockScore.Controllers
             //If I'm going to add the whole search, I need to have the api call and take in the parameters
             //on the Index page. Seems possible
 
-            user.Searches.Add(search);
-            user.Search = search;
             //This should work, as long as the await works like I think it does
 
             return RedirectToAction("Index", "Searches", user);
-            //Probably right
+            //info is not being stored once the redirect happens. Have to reassign in that controller? Why pass the parameter then?
         }
 
 

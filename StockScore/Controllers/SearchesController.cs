@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,7 +23,15 @@ namespace StockScore.Controllers
         // GET: Searches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Searches.ToListAsync());
+            UserViewModel model = new UserViewModel();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            model.Id = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
+            model.Searches = _context.Searches.Where(s => s.UserId == model.Id).ToList();
+            model.Search = _context.Searches.Where(s => s.UserId == model.Id).FirstOrDefault();
+            //Should be the first one I think
+
+            return View(model);
         }
 
         // GET: Searches/Details/5
