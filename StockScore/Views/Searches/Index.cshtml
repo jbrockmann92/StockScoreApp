@@ -1,10 +1,12 @@
-﻿@model Searches
+﻿@model UserViewModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Your search for @Model.Symbol</h1>
+<h1>Your search for @Model.Search.Symbol</h1>
+
+<h2>The score for this stock is @Model.Search.Score</h2>
 
 @*Quite a bit of logic here I think. Maybe better to do in C# and just display here*@

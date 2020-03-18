@@ -66,7 +66,11 @@ namespace StockScore.Controllers
             //If I'm going to add the whole search, I need to have the api call and take in the parameters
             //on the Index page. Seems possible
 
-            return RedirectToAction("Index", "Searches", search);
+            user.Searches.Add(search);
+            user.Search = search;
+            //This should work, as long as the await works like I think it does
+
+            return RedirectToAction("Index", "Searches", user);
             //Probably right
         }
 
@@ -205,7 +209,7 @@ namespace StockScore.Controllers
 
         public int getStockScore(Searches search)
         {
-            int score = 0; //change later
+            int score = 5; //change later
 
             //API call
             //Web Crawler/Google search
@@ -226,9 +230,9 @@ namespace StockScore.Controllers
 
             for (int i = 0; i < children.Count; i++)
             {
-                int open = int.Parse(children[i].First.First.First.ToString());
+                string open = children[i].First.First.First.ToString();
                 //Only gets the opening value at the moment, but will probably work for my purposes
-                stockScores.Add(open);
+                //stockScores.Add(open);
             }
             //Something like take every 7 and search them against Google articles for 1 week ago, 2 weeks ago, etc.
 
