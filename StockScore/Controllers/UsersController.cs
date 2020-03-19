@@ -68,7 +68,7 @@ namespace StockScore.Controllers
 
             //This should work, as long as the await works like I think it does
 
-            return RedirectToAction("Index", "Searches", user.Id);
+            return RedirectToAction("Index", "Searches", user);
             //info is not being stored once the redirect happens. Have to reassign in that controller? Why pass the parameter then?
         }
 
