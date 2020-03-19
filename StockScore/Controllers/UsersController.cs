@@ -246,19 +246,30 @@ namespace StockScore.Controllers
         public int GetGoogleScore(Searches search)
         {
             int score = 0;
+            List<JToken> jObjects = new List<JToken>();
 
             var client = new RestClient("https://www.googleapis.com/");
-            var request = new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock");
-            var response = client.Get(request);
+            var requests = new List<RestRequest>() { new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
+                new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://www.bloomberg.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
+                new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://finance.yahoo.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
+                new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&daterestrict=d[1]&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market") };
+            for (int i = 0; i < 4; i++)
+            {
+                var response = client.Get(requests[i]);
+                JObject jObject = JObject.Parse(response.Content);
+                var objString = jObject["items"].ToList();
+                for (int j = 0; j < 10; j++)
+                {
+                    jObjects.Add(objString[j]);
+                    //Not ideal for (0)n notation, but should work for now
+                }
+            }
+
+            //Only returns 10. Could use exactTerms parameter to ensure 10 positive ish and 10 negative ish. 30 total headlines would be pretty good.
 
             //Something about testing against the Words class and assigning score. How to do for each week in the past?
-            JObject jobject = JObject.Parse(response.Content);
-            var objString = jobject["items"].ToList();
-
-            for (int i = 0; i <objString.Count; i++)
-            {
-
-            }
+            //JObject jobject = JObject.Parse(response.Content);
+            //var objString = jobject["items"].ToList();
 
             return score;
         }
