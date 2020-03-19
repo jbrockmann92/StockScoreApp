@@ -245,7 +245,6 @@ namespace StockScore.Controllers
 
         public int GetGoogleScore(Searches search)
         {
-            int score = 0;
             List<JToken> jObjects = new List<JToken>();
 
             var client = new RestClient("https://www.googleapis.com/");
@@ -265,11 +264,32 @@ namespace StockScore.Controllers
                 }
             }
 
-            //Only returns 10. Could use exactTerms parameter to ensure 10 positive ish and 10 negative ish. 30 total headlines would be pretty good.
-
+            int score = CheckAgainstWords(jObjects);
             //Something about testing against the Words class and assigning score. How to do for each week in the past?
             //JObject jobject = JObject.Parse(response.Content);
             //var objString = jobject["items"].ToList();
+
+            return score;
+        }
+
+        public int CheckAgainstWords(List<JToken> jObjects)
+        {
+            int score = 0;
+            for (int i = 0; i < Words.negativeWords.Length; i++)
+            {
+                if (jObjects[i].ToString().Contains(Words.negativeWords[i]))
+                {
+                    score--;
+                }
+            }
+
+            for (int i = 0; i < Words.positiveWords.Length; i++)
+            {
+                if (jObjects[i].ToString().Contains(Words.positiveWords[i]))
+                {
+                    score++;
+                }
+            }
 
             return score;
         }
