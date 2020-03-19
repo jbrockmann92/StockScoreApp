@@ -207,8 +207,6 @@ namespace StockScore.Controllers
 
         public int getStockScore(Searches search)
         {
-            int score = 5; //change later
-
             //API call
             //Web Crawler/Google search
             //Positive and negative words(??) to test against
@@ -216,13 +214,14 @@ namespace StockScore.Controllers
             //Logic to compare them and assign that total to the score int
             //Return a letter grade instead?
 
+            //Probably need a different api request if they choose a year time frame
+
+            int score = 5; //change later
+            int googleScore;
             var client = new RestClient("https://www.alphavantage.co/");
-
-            var request = new RestRequest("query?function=TIME_SERIES_DAILY&symbol=" + search.Symbol + "&interval=5min&apikey=" + APIKeys.AVKey, DataFormat.Json);
-
+            var request = new RestRequest("query?function=TIME_SERIES_DAILY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
+            //Got rid of time frame before &apikey= above
             var response = client.Get(request);
-
-            string temp = "Hello";
 
             JObject jobject = JObject.Parse(response.Content);
             var children = jobject.Last.First.Children().ToList();
@@ -235,9 +234,20 @@ namespace StockScore.Controllers
                 float tempScore = float.Parse(open);
                 stockScores.Add((int)tempScore);
             }
+
+            googleScore = GetGoogleScore(search);
             //Something like take every 7 and search them against Google articles for 1 week ago, 2 weeks ago, etc.
 
             //Calculate things here. stockScores will have all necessary values by this point
+
+            return score;
+        }
+
+        public int GetGoogleScore(Searches search)
+        {
+            int score = 0;
+
+
 
             return score;
         }
