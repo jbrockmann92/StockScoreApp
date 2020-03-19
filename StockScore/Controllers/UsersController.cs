@@ -247,7 +247,18 @@ namespace StockScore.Controllers
         {
             int score = 0;
 
+            var client = new RestClient("https://www.googleapis.com/");
+            var request = new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock");
+            var response = client.Get(request);
 
+            //Something about testing against the Words class and assigning score. How to do for each week in the past?
+            JObject jobject = JObject.Parse(response.Content);
+            var objString = jobject["items"].ToList();
+
+            for (int i = 0; i <objString.Count; i++)
+            {
+
+            }
 
             return score;
         }
