@@ -13,7 +13,7 @@
 
 @*Want to have also a place here where I link back to the search page. Or even a place to search again*@
 <body>
-    @for (int i = Model.Searches.Count(); i > 0; i--)
+    @for (int i = Model.Searches.Count() - 1; i >= 0; i--)
     {
         <table>
             <tr>
@@ -33,5 +33,7 @@
         </table>
     }
 
-    <a asp-controller="User_Stocks" asp-action="Create" asp-route-id="@Model.Id">Add stocks to your portfolio</a>
+    <div>
+        <a asp-controller="User_Stocks" asp-action="Create">Add stocks to your portfolio</a>
+    </div>
 </body>

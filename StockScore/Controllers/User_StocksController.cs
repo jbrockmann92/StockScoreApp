@@ -61,9 +61,10 @@ namespace StockScore.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             user_Stocks.UserId = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
+
             _context.Add(user_Stocks);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("User", "Index");
         }
 
         // GET: User_Stocks/Edit/5
