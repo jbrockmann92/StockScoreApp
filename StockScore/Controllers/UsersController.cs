@@ -57,7 +57,7 @@ namespace StockScore.Controllers
             search.Symbol = user.Search.Symbol;
             search.TimeFrame = user.Search.TimeFrame;
             search.UserId = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
-            //Not great naming convention here. Change if possible
+            //Why doesn't LastOrDefault work?
 
             search.Score = getStockScore(search);
 
@@ -216,7 +216,6 @@ namespace StockScore.Controllers
 
             //Probably need a different api request if they choose a year time frame
 
-            int score = 5; //change later
             int googleScore;
             var client = new RestClient("https://www.alphavantage.co/");
             var request = new RestRequest("query?function=TIME_SERIES_DAILY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
@@ -235,12 +234,15 @@ namespace StockScore.Controllers
                 stockScores.Add((int)tempScore);
             }
 
+            //Want something also that checks if the stock is going up or down?
+
             googleScore = GetGoogleScore(search);
+
             //Something like take every 7 and search them against Google articles for 1 week ago, 2 weeks ago, etc.
 
             //Calculate things here. stockScores will have all necessary values by this point
 
-            return score;
+            return googleScore;
         }
 
         public int GetGoogleScore(Searches search)
@@ -277,7 +279,7 @@ namespace StockScore.Controllers
             int score = 0;
             for (int i = 0; i < Words.negativeWords.Length; i++)
             {
-                if (jObjects[i].ToString().Contains(Words.negativeWords[i]))
+                if (jObjects[i].ToString().ToLower().Contains(Words.negativeWords[i]))
                 {
                     score--;
                 }
@@ -285,7 +287,7 @@ namespace StockScore.Controllers
 
             for (int i = 0; i < Words.positiveWords.Length; i++)
             {
-                if (jObjects[i].ToString().Contains(Words.positiveWords[i]))
+                if (jObjects[i].ToString().ToLower().Contains(Words.positiveWords[i]))
                 {
                     score++;
                 }
@@ -293,5 +295,8 @@ namespace StockScore.Controllers
 
             return score;
         }
+
+        //Without analyzing past weeks data I still fulfill the user stories. Move on after analyzing against positive or negative
+        //then worry about deepening the algorithm
     }
 }
