@@ -279,7 +279,8 @@ namespace StockScore.Controllers
             int score = 0;
             for (int i = 0; i < Words.negativeWords.Length; i++)
             {
-                if (jObjects[i].ToString().ToLower().Contains(Words.negativeWords[i]))
+                var jObject = jObjects[i].ToString().ToLower();
+                if (jObject.Contains(Words.negativeWords[i]))
                 {
                     score--;
                 }
@@ -287,7 +288,8 @@ namespace StockScore.Controllers
 
             for (int i = 0; i < Words.positiveWords.Length; i++)
             {
-                if (jObjects[i].ToString().ToLower().Contains(Words.positiveWords[i]))
+                var jObject = jObjects[i].ToString().ToLower();
+                if (jObject.Contains(Words.positiveWords[i]))
                 {
                     score++;
                 }

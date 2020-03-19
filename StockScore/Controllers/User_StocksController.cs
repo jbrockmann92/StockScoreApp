@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -48,7 +49,6 @@ namespace StockScore.Controllers
         // GET: User_Stocks/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -57,16 +57,13 @@ namespace StockScore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StockSymbol,PurchaseDate,UserId")] User_Stocks user_Stocks)
+        public async Task<IActionResult> Create(User_Stocks user_Stocks)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(user_Stocks);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", user_Stocks.UserId);
-            return View(user_Stocks);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            user_Stocks.UserId = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
+            _context.Add(user_Stocks);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: User_Stocks/Edit/5

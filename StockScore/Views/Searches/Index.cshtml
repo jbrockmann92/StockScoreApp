@@ -13,23 +13,25 @@
 
 @*Want to have also a place here where I link back to the search page. Or even a place to search again*@
 <body>
-    @foreach (var item in Model.Searches)
+    @for (int i = Model.Searches.Count(); i > 0; i--)
     {
         <table>
             <tr>
                 <td>
-                    @item.Symbol
+                    @Model.Searches[i].Symbol
                 </td>
                 <td>
-                    @item.Score
+                    @Model.Searches[i].Score
                 </td>
                 <td>
-                    @item.TimeFrame
+                    @Model.Searches[i].TimeFrame
                 </td>
                 <td>
-                    <a asp-action="Index" asp-route-id="@item.Id">Search this again</a>
+                    <a asp-action="Index" asp-route-id="@Model.Searches[i].Id">Search this again</a>
                 </td>
             </tr>
         </table>
     }
+
+    <a asp-controller="User_Stocks" asp-action="Create" asp-route-id="@Model.Id">Add stocks to your portfolio</a>
 </body>
