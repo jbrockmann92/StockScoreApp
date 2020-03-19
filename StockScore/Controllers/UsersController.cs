@@ -31,14 +31,14 @@ namespace StockScore.Controllers
             var applicationDbContext = _context.User.Include(u => u.IdentityUser);
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userViewModel = new UserViewModel();
-            userViewModel.User = new User();
+            userViewModel.User = _context.User.Where(u => u.UserId == userId).FirstOrDefault();
 
             var user = _context.User.FirstOrDefault(a => a.UserId == userId);
             if (user is null)
             {
                 return RedirectToAction("Create");
             }
-            userViewModel.Stocks = new List<User_Stocks>();
+            userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
             userViewModel.User.FirstName = user.FirstName;
             //Need to do this differently, but it's a band aid for now
 

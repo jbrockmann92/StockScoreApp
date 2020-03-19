@@ -13,9 +13,10 @@
 
 @*Want to have also a place here where I link back to the search page. Or even a place to search again*@
 <body>
-    @for (int i = Model.Searches.Count() - 1; i >= 0; i--)
+    @for (int i = Model.Searches.Count() - 1; i >= Model.Searches.Count() - 6; i--)
+        //Right now this will error out if there are fewer than 6 in the list of stocks
     {
-        <table>
+        <table class="table">
             <tr>
                 <td>
                     @Model.Searches[i].Symbol
@@ -34,6 +35,6 @@
     }
 
     <div>
-        <a asp-controller="User_Stocks" asp-action="Create">Add stocks to your portfolio</a>
+        <a asp-controller="User_Stocks" asp-action="Create">Add more stocks to your portfolio</a>
     </div>
 </body>
