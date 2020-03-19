@@ -222,15 +222,18 @@ namespace StockScore.Controllers
 
             var response = client.Get(request);
 
+            string temp = "Hello";
+
             JObject jobject = JObject.Parse(response.Content);
             var children = jobject.Last.First.Children().ToList();
             List<int> stockScores = new List<int>();
 
             for (int i = 0; i < children.Count; i++)
             {
-                string open = children[i].First.First.First.ToString();
+                var open = children[i].First.First.First.ToString();
                 //Only gets the opening value at the moment, but will probably work for my purposes
-                //stockScores.Add(open);
+                float tempScore = float.Parse(open);
+                stockScores.Add((int)tempScore);
             }
             //Something like take every 7 and search them against Google articles for 1 week ago, 2 weeks ago, etc.
 
