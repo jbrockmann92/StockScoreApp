@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace StockScore.Models
 {
-    public class Words
+    public static class Words
     {
-        string[] negativeWords = new string[] { "cut", "" };
-        string[] positiveWords = new string[] { "boost", "" };
+        public static string[] negativeWords = new string[] { "plunged", "dropped", "drop", "bear", "negative", "pessimistic", "plummeted", "nervous", "" };
+        public static string[] positiveWords = new string[] { "boost", "lowered", "cut", "bull", "positive", "optimistic", "slashed", "" };
     }
 }
