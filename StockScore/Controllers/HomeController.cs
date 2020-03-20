@@ -27,18 +27,31 @@ namespace StockScore.Controllers
         public IActionResult Index()
         {
             Scoring scoring = new Scoring();
+            Top_Stocks top_Stocks = new Top_Stocks();
+            List<string> unsortedStocks = new List<string>();
+            
 
+            //Will need to change once I've implemented time frame, but works for now
 
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
+                for (int i = 0; i < top_Stocks.possibleTopStocks.Count(); i++)
+                {
+                    Searches search = new Searches();
+                    search.Symbol = top_Stocks.possibleTopStocks[i];
+                    int stockScore = scoring.GetStockScore(search);
+
+                }
+
+                List<string> sortedStocks = SortStocks();
+
                 return Redirect("./Identity/Account/Login");
             }
             if (User.IsInRole("User"))
             {
-                //Returning false right now. Why?
-                return RedirectToAction("Index", "Users");
+                return RedirectToAction("Index", "Users", top_Stocks);
             }
             return View();
         }
@@ -52,6 +65,11 @@ namespace StockScore.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public List<string> SortStocks()
+        {
+
         }
     }
 }

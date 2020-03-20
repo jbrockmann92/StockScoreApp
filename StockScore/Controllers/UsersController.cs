@@ -26,7 +26,7 @@ namespace StockScore.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Top_Stocks top_Stocks)
         {
             var applicationDbContext = _context.User.Include(u => u.IdentityUser);
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
