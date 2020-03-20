@@ -14,5 +14,6 @@ namespace StockScore.Models
         public string numberTwo { get; set; }
         public string numberThree { get; set; }
         public string numberFour { get; set; }
+        public DateTime date { get; set; }
     }
 }

@@ -6,21 +6,30 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using StockScore.Data;
 using StockScore.Models;
 
 namespace StockScore.Controllers
 {
     public class HomeController : Controller
     {
+
+        private readonly ApplicationDbContext _context;
+
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
+            _context = context;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            Scoring scoring = new Scoring();
+
+
+
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
