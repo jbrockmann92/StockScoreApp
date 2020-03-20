@@ -48,6 +48,18 @@ namespace StockScore.Controllers
 
             //Something with await here if possible
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
+            userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == user.Id).ToList(); //Might be unnecessary
+            //To do what I want to do, I would have to assign them as a list of ints for each stock that the user owns? Doesn't seem right
+
+            foreach (User_Stocks stock in userViewModel.Stocks)
+            {
+                Scoring scoring = new Scoring();
+                Searches search = new Searches();
+                search.Symbol = stock.StockSymbol;
+                search.TimeFrame = "Week";
+                scoring.GetStockScore(search);
+                //Not quite right. I need to get the scores for however many weeks they say they've owned the stock
+            }
 
             return View(userViewModel);
         }

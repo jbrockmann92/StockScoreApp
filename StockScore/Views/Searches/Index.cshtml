@@ -10,7 +10,7 @@
 <h2>The score for this stock is @Model.Search.Score</h2>
 
 <body>
-    @for (int i = Model.Searches.Count() - 1; i >= Model.Searches.Count() - 6; i--)
+    @for (int i = Model.Searches.Count() - 1; i >= Model.Searches.Count(); i--)
         //Right now this will error out if there are fewer than 6 in the list of stocks
     {
         <table class="table">

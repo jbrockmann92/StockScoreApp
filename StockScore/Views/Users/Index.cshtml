@@ -38,10 +38,8 @@
                 <td>
                     @item.StockSymbol
                 </td>
-                <td>
-                    @item.PurchaseDate
-                </td>
-                @*something with the stock's current value here?*@
+                @foreach (var score in Model.Stocks)
+                
             </tr>
         }
     </table>
