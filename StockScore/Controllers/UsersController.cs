@@ -51,13 +51,13 @@ namespace StockScore.Controllers
             userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == user.Id).ToList(); //Might be unnecessary
             //To do what I want to do, I would have to assign them as a list of ints for each stock that the user owns? Doesn't seem right
 
-            foreach (User_Stocks stock in userViewModel.Stocks)
+            for (int i = 0; i < userViewModel.Stocks.Count(); i++ )
             {
                 Scoring scoring = new Scoring();
                 Searches search = new Searches();
-                search.Symbol = stock.StockSymbol;
+                search.Symbol = userViewModel.Stocks[i].StockSymbol;
                 search.TimeFrame = "Week";
-                for (int i = 0; i < userViewModel.Stocks.Count(); i++)
+                if (i <= int.Parse(userViewModel.Stocks[i].PurchaseDate))
                 {
                     userViewModel.Stocks[i].Scores = new List<int>();
                     userViewModel.Stocks[i].Scores = scoring.GetStockScore(search);
