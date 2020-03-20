@@ -41,7 +41,6 @@ namespace StockScore.Controllers
             }
             userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
             userViewModel.User.FirstName = user.FirstName;
-            //Need to do this differently, but it's a band aid for now
 
             //Make list of possible top stocks and foreach run the GetStockScore method. Can I run this somewhere on startup? Index is not the best place at all
             //because it will run every time the user goes back to the homepage
@@ -63,6 +62,7 @@ namespace StockScore.Controllers
                     userViewModel.Stocks[i].Scores = scoring.GetStockScore(search);
                 }
             }
+            //Make this its own method??
 
             return View(userViewModel);
         }
