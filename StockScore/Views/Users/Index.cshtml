@@ -38,8 +38,13 @@
                 <td>
                     @item.StockSymbol
                 </td>
-                @foreach (var score in Model.Stocks)
-                
+                @foreach (var score in item.Scores)
+                {
+                    <td>
+                        @score
+                    </td>
+                }
+
             </tr>
         }
     </table>

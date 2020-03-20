@@ -57,8 +57,11 @@ namespace StockScore.Controllers
                 Searches search = new Searches();
                 search.Symbol = stock.StockSymbol;
                 search.TimeFrame = "Week";
-                scoring.GetStockScore(search);
-                //Not quite right. I need to get the scores for however many weeks they say they've owned the stock
+                for (int i = 0; i < userViewModel.Stocks.Count(); i++)
+                {
+                    userViewModel.Stocks[i].Scores = new List<int>();
+                    userViewModel.Stocks[i].Scores = scoring.GetStockScore(search);
+                }
             }
 
             return View(userViewModel);
@@ -79,7 +82,7 @@ namespace StockScore.Controllers
 
             //Something here with if statements that will test if the timeframe is weekly or yearly and return based on those instead
 
-            search.Score = scoring.GetStockScore(search);
+            search.Score = scoring.GetGoogleScore(search);
 
             _context.Searches.Add(search);
             await _context.SaveChangesAsync();

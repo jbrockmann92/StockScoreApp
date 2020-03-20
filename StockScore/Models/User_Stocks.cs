@@ -14,6 +14,8 @@ namespace StockScore.Models
         public int Id { get; set; }
         public string StockSymbol { get; set; }
         public string PurchaseDate { get; set; }
+        [NotMapped]
+        public List<int> Scores { get; set; }
 
         [ForeignKey("User")]
         public int UserId { get; set; }

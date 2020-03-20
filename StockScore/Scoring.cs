@@ -12,7 +12,7 @@ namespace StockScore
 {
     public class Scoring
     {
-        public int GetStockScore(Searches search)
+        public List<int> GetStockScore(Searches search)
         {
             //API call
             //Web Crawler/Google search
@@ -24,6 +24,7 @@ namespace StockScore
             //Probably need a different api request if they choose a year time frame
 
             int googleScore;
+            List<int> stockScores = new List<int>();
             var client = new RestClient("https://www.alphavantage.co/");
             RestRequest request = null;
             
@@ -34,7 +35,7 @@ namespace StockScore
 
                 var response = client.Get(request);
 
-                var stockScores = GetOpenValues(response); //Opening values by day
+                stockScores = GetOpenValues(response); //Opening values by day
 
                 //Want something also that checks if the stock is going up or down?
             }
@@ -44,7 +45,7 @@ namespace StockScore
 
                 var response = client.Get(request);
 
-                var stockScores = GetOpenValues(response); //Opening values by week
+                stockScores = GetOpenValues(response); //Opening values by week
 
                 //Want something also that checks if the stock is going up or down?
             }
@@ -54,7 +55,7 @@ namespace StockScore
 
                 var response = client.Get(request);
 
-                var stockScores = GetOpenValues(response); //Opening values by month
+                stockScores = GetOpenValues(response); //Opening values by month
 
                 //Want something also that checks if the stock is going up or down?
                 //Probably could just take it in quarters, average the quarters, and assign to variables, the see what order they come out
@@ -66,7 +67,7 @@ namespace StockScore
             googleScore = GetGoogleScore(search);
             //Probably want to do something where I test if the stock has been moving up. That's what stockScores can do
 
-            return googleScore;
+            return stockScores;
         }
 
         public int GetGoogleScore(Searches search)
