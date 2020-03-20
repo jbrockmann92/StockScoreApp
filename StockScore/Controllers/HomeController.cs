@@ -66,6 +66,7 @@ namespace StockScore.Controllers
                     {
                         person[0] = UserList[j].FirstName + " " + UserList[j].LastName;
                         person[1] = IdUserList.Where(u => u.Id == UserList[j].UserId).FirstOrDefault().Email;
+                        //Get the four top stocks into a string here?
                         peopleToContact.Add(person);
                         //Not sure if this is disgusting or beautiful.. But it works
                     }
@@ -117,14 +118,14 @@ namespace StockScore.Controllers
             client.BaseUrl = new System.Uri("https://api.mailgun.net/v3");
             client.Authenticator =
             new HttpBasicAuthenticator("api",
-                                       "6ac933c66241b9444328f870cc7e51a7-9a235412-f16494aa");
+                                       APIKeys.MailgunKey);
             RestRequest request = new RestRequest();
             request.AddParameter("domain", "sandboxfc0597be9eaa439ca18c08a8f738c777.mailgun.org", ParameterType.UrlSegment);
             request.Resource = "{domain}/messages";
             request.AddParameter("from", "Mailgun Sandbox <postmaster@sandboxfc0597be9eaa439ca18c08a8f738c777.mailgun.org>");
             request.AddParameter("to", "" + personToContact[0] + "<" + personToContact[1] + ">");
             request.AddParameter("subject", "Hello Jacob Brockmann");
-            request.AddParameter("text", "Congratulations " + personToContact[0] + ", you just sent an email with Mailgun!  You are truly awesome!");
+            request.AddParameter("text", "Hello " + personToContact[0] + ", Here are StockScore's top recommended stock purchases for today!");
             request.Method = Method.POST;
             return client.Execute(request);
         }
