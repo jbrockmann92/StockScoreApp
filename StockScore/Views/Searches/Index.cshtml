@@ -9,9 +9,6 @@
 
 <h2>The score for this stock is @Model.Search.Score</h2>
 
-@*Quite a bit of logic here I think. Maybe better to do in C# and just display here*@
-
-@*Want to have also a place here where I link back to the search page. Or even a place to search again*@
 <body>
     @for (int i = Model.Searches.Count() - 1; i >= Model.Searches.Count() - 6; i--)
         //Right now this will error out if there are fewer than 6 in the list of stocks

@@ -65,6 +65,8 @@ namespace StockScore.Controllers
             Scoring scoring = new Scoring();
             //This should work
 
+            //Something here with if statements that will test if the timeframe is weekly or yearly and return based on those instead
+
             search.Score = scoring.GetStockScore(search);
 
             _context.Searches.Add(search);
