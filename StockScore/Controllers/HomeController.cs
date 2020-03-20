@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RestSharp;
+using RestSharp.Authenticators;
 using StockScore.Data;
 using StockScore.Models;
 
@@ -23,7 +25,7 @@ namespace StockScore.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             Scoring scoring = new Scoring();
             Top_Stocks top_Stocks = new Top_Stocks();
@@ -47,12 +49,33 @@ namespace StockScore.Controllers
                 top_Stocks = SortStocks(unsortedStocks);
                 //top_Stocks.UserId = userId;
                 _context.Top_Stocks.Add(top_Stocks);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 //Probably don't need to assign this a user, but I will for now
 
                 //By this point, sortedStocks should contain the four strings that are the stock symbols for the highest scoring stocks
 
                 //Store these in the db, then you can grab them by the signed in user's id in the UsersController. Store as Top_Stocks
+                List<string[]> peopleToContact = new List<string[]>();
+
+                for (int i = 0; i < _context.User.Count(); i++)
+                {
+                    string[] person = new string[2];
+                    var UserList = _context.User.ToList();
+                    var IdUserList = _context.Users.ToList();
+                    for (int j = 0; j < UserList.Count(); j++)
+                    {
+                        person[0] = UserList[j].FirstName + " " + UserList[j].LastName;
+                        person[1] = IdUserList.Where(u => u.Id == UserList[j].UserId).FirstOrDefault().Email;
+                        peopleToContact.Add(person);
+                        //Not sure if this is disgusting or beautiful.. But it works
+                    }
+                }
+
+                foreach (string[] person in peopleToContact)
+                {
+                    SendSimpleMessage(person);
+                    //I think it's running twice on sign in right now. Fix that
+                }
 
                 return Redirect("./Identity/Account/Login");
             }
@@ -86,6 +109,24 @@ namespace StockScore.Controllers
             top_Stocks.NumberFour = sortedSearches[3].Symbol.ToUpper();
 
             return top_Stocks;
+        }
+
+        public static IRestResponse SendSimpleMessage(string[] personToContact)
+        {
+            RestClient client = new RestClient();
+            client.BaseUrl = new System.Uri("https://api.mailgun.net/v3");
+            client.Authenticator =
+            new HttpBasicAuthenticator("api",
+                                       "6ac933c66241b9444328f870cc7e51a7-9a235412-f16494aa");
+            RestRequest request = new RestRequest();
+            request.AddParameter("domain", "sandboxfc0597be9eaa439ca18c08a8f738c777.mailgun.org", ParameterType.UrlSegment);
+            request.Resource = "{domain}/messages";
+            request.AddParameter("from", "Mailgun Sandbox <postmaster@sandboxfc0597be9eaa439ca18c08a8f738c777.mailgun.org>");
+            request.AddParameter("to", "" + personToContact[0] + "<" + personToContact[1] + ">");
+            request.AddParameter("subject", "Hello Jacob Brockmann");
+            request.AddParameter("text", "Congratulations " + personToContact[0] + ", you just sent an email with Mailgun!  You are truly awesome!");
+            request.Method = Method.POST;
+            return client.Execute(request);
         }
     }
 }
