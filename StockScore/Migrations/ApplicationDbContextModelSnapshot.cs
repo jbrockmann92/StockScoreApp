@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockScore.Data;
 
-namespace StockScore.Data.Migrations
+namespace StockScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -48,8 +48,8 @@ namespace StockScore.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "93043e07-e2f8-43b0-9a92-30de6b766e4b",
-                            ConcurrencyStamp = "4a785fdf-37b3-41c6-8770-bb9474b12031",
+                            Id = "d0015586-2d7c-422b-8fab-87590baccf22",
+                            ConcurrencyStamp = "61dc6d0b-d6ea-417a-bc56-fd65162247ad",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -283,17 +283,20 @@ namespace StockScore.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("numberFour")
+                    b.Property<string>("NumberFour")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("numberOne")
+                    b.Property<string>("NumberOne")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("numberThree")
+                    b.Property<string>("NumberThree")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("numberTwo")
+                    b.Property<string>("NumberTwo")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

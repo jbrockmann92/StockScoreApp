@@ -26,7 +26,8 @@ namespace StockScore.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index(Top_Stocks top_Stocks)
+        public async Task<IActionResult> Index()
+            //Why doesn't the information get passed? I passed an object, but it's blank by the time it gets here?
         {
             var applicationDbContext = _context.User.Include(u => u.IdentityUser);
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -46,6 +47,7 @@ namespace StockScore.Controllers
             //because it will run every time the user goes back to the homepage
 
             //Something with await here if possible
+            userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
 
             return View(userViewModel);
         }

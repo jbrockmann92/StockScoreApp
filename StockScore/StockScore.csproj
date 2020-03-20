@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-StockScore-9BA43988-7247-4530-888B-FC18CC24EA23</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20200320152103_init.cs" />
+    <Compile Remove="Migrations\20200320152103_init.Designer.cs" />
+    <Compile Remove="Migrations\20200320152445_ChangedTop_Stocks.cs" />
+    <Compile Remove="Migrations\20200320152445_ChangedTop_Stocks.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />

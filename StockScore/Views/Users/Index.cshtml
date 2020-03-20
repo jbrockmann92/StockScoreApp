@@ -1,5 +1,5 @@
 ﻿@model UserViewModel
-
+@*This is the Index for the User*@
 @{
     ViewData["Title"] = "Index";
 }
@@ -43,6 +43,30 @@
                 </td>
                 @*something with the stock's current value here?*@
             </tr>
+        }
+    </table>
+
+    <table class="table">
+        <h3>
+            Our Top Recommendations:
+        </h3>
+        <tr>
+            <td>
+                @Model.top_Stocks.NumberOne
+            </td>
+            <td>
+                @Model.top_Stocks.NumberTwo
+            </td>
+            <td>
+                @Model.top_Stocks.NumberThree
+            </td>
+            <td>
+                @Model.top_Stocks.NumberFour
+            </td>
+            <td>
+                @*Something to search for this stock*@
+            </td>
+        </tr>
         }
     </table>
 </body>
