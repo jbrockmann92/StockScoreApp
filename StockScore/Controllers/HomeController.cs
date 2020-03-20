@@ -59,14 +59,18 @@ namespace StockScore.Controllers
 
                 for (int i = 0; i < _context.User.Count(); i++)
                 {
-                    string[] person = new string[2];
+                    string[] person = new string[3];
                     var UserList = _context.User.ToList();
                     var IdUserList = _context.Users.ToList();
                     for (int j = 0; j < UserList.Count(); j++)
                     {
                         person[0] = UserList[j].FirstName + " " + UserList[j].LastName;
                         person[1] = IdUserList.Where(u => u.Id == UserList[j].UserId).FirstOrDefault().Email;
-                        //Get the four top stocks into a string here?
+                        if (j < 4)
+                        {
+                            var stockList = _context.Top_Stocks.ToList();
+                            person[2] = stockList[j].NumberOne + " " + stockList[j].NumberTwo + " " + stockList[j].NumberThree + " " + stockList[j].NumberFour;
+                        }
                         peopleToContact.Add(person);
                         //Not sure if this is disgusting or beautiful.. But it works
                     }
@@ -125,7 +129,7 @@ namespace StockScore.Controllers
             request.AddParameter("from", "Mailgun Sandbox <postmaster@sandboxfc0597be9eaa439ca18c08a8f738c777.mailgun.org>");
             request.AddParameter("to", "" + personToContact[0] + "<" + personToContact[1] + ">");
             request.AddParameter("subject", "Hello Jacob Brockmann");
-            request.AddParameter("text", "Hello " + personToContact[0] + ", Here are StockScore's top recommended stock purchases for today!");
+            request.AddParameter("text", "Hello " + personToContact[0] + ", Here are StockScore's top recommended stock purchases for today: " + personToContact[2]);
             request.Method = Method.POST;
             return client.Execute(request);
         }
