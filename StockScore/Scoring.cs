@@ -65,7 +65,6 @@ namespace StockScore
 
             //Calculate things here. stockScores will have all necessary values by this point
             googleScore = GetGoogleScore(search);
-            //Probably want to do something where I test if the stock has been moving up. That's what stockScores can do
 
             return stockScores;
         }
@@ -84,10 +83,11 @@ namespace StockScore
                 var response = client.Get(requests[i]);
                 JObject jObject = JObject.Parse(response.Content);
                 var objString = jObject["items"].ToList();
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < objString.Count(); j++)
                 {
                     jObjects.Add(objString[j]);
                     //Not ideal for (0)n notation, but should work for now
+                    //Looks like I need an await here somewhere. It's not working unless I have break points here
                 }
             }
 

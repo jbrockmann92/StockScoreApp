@@ -47,7 +47,6 @@ namespace StockScore.Controllers
 
             //Something with await here if possible
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
-            userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == user.Id).ToList(); //Might be unnecessary
             //To do what I want to do, I would have to assign them as a list of ints for each stock that the user owns? Doesn't seem right
 
             for (int i = 0; i < userViewModel.Stocks.Count(); i++ )

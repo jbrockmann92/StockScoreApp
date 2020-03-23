@@ -29,7 +29,7 @@ namespace StockScore.Controllers
 
             model.Id = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
             model.Searches = _context.Searches.Where(s => s.UserId == model.Id).ToList();
-            model.Search = _context.Searches.Where(s => s.UserId == model.Id).ToList()[_context.Searches.Count() - 1];
+            model.Search = _context.Searches.Where(s => s.UserId == model.Id).ToList().FirstOrDefault();
 
             if (id != 0)
             {

@@ -31,10 +31,6 @@ namespace StockScore.Controllers
             Top_Stocks top_Stocks = new Top_Stocks();
             List<Searches> unsortedStocks = new List<Searches>();
 
-            //Will need to change once I've implemented time frame, but works for now
-
-            //May be better in the Startup class, but works here for now
-
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
