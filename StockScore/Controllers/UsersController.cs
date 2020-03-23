@@ -40,11 +40,7 @@ namespace StockScore.Controllers
                 return RedirectToAction("Create");
             }
             userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
-            //Maybe the time frame isn't being saved in teh
             userViewModel.User.FirstName = user.FirstName;
-
-            //Make list of possible top stocks and foreach run the GetStockScore method. Can I run this somewhere on startup? Index is not the best place at all
-            //because it will run every time the user goes back to the homepage
 
             //Something with await here if possible
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();

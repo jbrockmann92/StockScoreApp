@@ -16,5 +16,6 @@ namespace StockScore.Models
         public Searches Search { get; set; }
         public List<Searches> Searches { get; set; }
         public Top_Stocks top_Stocks { get; set; }
+        public string stockDataJson { get; set; }
     }
 }

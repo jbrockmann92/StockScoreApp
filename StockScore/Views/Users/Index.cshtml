@@ -15,15 +15,15 @@
 
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
-                ['Portfolio Value'],
-                @for (int i = 0; i < Model.Stocks.Count(); i++)
-                {
-                    Console.WriteLine("[" + Model.Stocks[i].Scores[i] + "]");
-                    //Will only work right now if I do a nested for loop?
-                    //['2004',  1000,      400]
-                    //Probably not the way to do this. I want to put it into the javascript code
-                }
+                ['Week', 'Value'],
+                ['1',  @Model.Stocks[0].Scores[0]],
+                ['2',  @Model.Stocks[0].Scores[1]],
+                ['3',  @Model.Stocks[0].Scores[2]],
+                ['4',  @Model.Stocks[0].Scores[3]],
+                ['5',  @Model.Stocks[0].Scores[4]],
+                ['6',  @Model.Stocks[0].Scores[5]]
             ]);
+
 
             var options = {
                 title: 'Portfolio Performance',
@@ -43,11 +43,11 @@
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div>
-                <label style="padding-top: inherit; padding-bottom: inherit" asp-for="Search.Symbol">Please enter a stock Symbol you'd like a score for</label>
+                <label style="padding-top: inherit; padding-bottom: inherit; font-size: x-large" asp-for="Search.Symbol">Please enter a stock Symbol you'd like a score for</label>
                 <input style="padding-top: inherit; padding-bottom: inherit" asp-for="Search.Symbol" class="form-control" />
             </div>
             <div>
-                <label style="padding-top: inherit; padding-bottom: inherit" asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Month, or Year</label>
+                <label style="padding-top: inherit; padding-bottom: inherit; font-size: x-large" asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Month, or Year</label>
                 <input style="padding-top: inherit; padding-bottom: inherit" asp-for="Search.TimeFrame" class="form-control" />
             </div>
             <div>
@@ -67,7 +67,6 @@
                     @item.StockSymbol
                 </td>
                 <td id="PerformanceChart" style="width: 900px; height: 500px">
-
                 </td>
 
             </tr>
