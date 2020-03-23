@@ -27,7 +27,6 @@ namespace StockScore.Controllers
 
         // GET: Users
         public async Task<IActionResult> Index()
-            //Why doesn't the information get passed? I passed an object, but it's blank by the time it gets here?
         {
             var applicationDbContext = _context.User.Include(u => u.IdentityUser);
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -59,11 +58,19 @@ namespace StockScore.Controllers
                 for (int j = 0; j < stockScoreLimit; j++)
                 {
                     //Not ideal because of big O, but works for now
-                    userViewModel.Stocks[i].Scores.Add(allScores[j]);
+                    userViewModel.Stocks[0].Scores.Add(0);
+                    userViewModel.Stocks[0].Scores[j] += allScores[j];
+                    //Probably works
                 }
                 //How to consolidate all scores? Or do I want to list each one individually on a graph?
             }
             //Make this its own method??
+            if (userViewModel.Stocks.Count() == 0)
+            {
+                userViewModel.Stocks.Add(new User_Stocks() { });
+                userViewModel.Stocks[0].Scores = new List<int>() { 0, 0, 0, 0, 0, 0};
+                //Just make it meaningless values? 
+            }
 
             return View(userViewModel);
         }
