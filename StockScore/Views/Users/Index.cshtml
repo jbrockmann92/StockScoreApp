@@ -8,6 +8,34 @@
 </center>
 
 <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Portfolio Value'],
+                @for (int i = 0; i < Model.Stocks.Count(); i++)
+                {
+                    Console.WriteLine("[" + Model.Stocks[i].Scores[i] + "]");
+                    //Will only work right now if I do a nested for loop?
+                    //['2004',  1000,      400]
+                    //Probably not the way to do this. I want to put it into the javascript code
+                }
+            ]);
+
+            var options = {
+                title: 'Portfolio Performance',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('PerformanceChart'));
+
+            chart.draw(data, options);
+        }
+    </script>
 
 </head>
 <body>
@@ -38,12 +66,9 @@
                 <td>
                     @item.StockSymbol
                 </td>
-                @foreach (var score in item.Scores)
-                {
-                    <td>
-                        @score
-                    </td>
-                }
+                <td id="PerformanceChart" style="width: 900px; height: 500px">
+
+                </td>
 
             </tr>
         }
@@ -56,6 +81,7 @@
         <tr>
             <td>
                 @Model.top_Stocks.NumberOne
+                @*Find a way to make these clickable as searches*@
             </td>
             <td>
                 @Model.top_Stocks.NumberTwo
@@ -71,6 +97,6 @@
                 @*Something that will show the stock's open value for today?*@
             </td>
         </tr>
-        }
     </table>
+
 </body>

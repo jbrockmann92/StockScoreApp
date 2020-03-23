@@ -40,6 +40,7 @@ namespace StockScore.Controllers
                 return RedirectToAction("Create");
             }
             userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
+            //Maybe the time frame isn't being saved in teh
             userViewModel.User.FirstName = user.FirstName;
 
             //Make list of possible top stocks and foreach run the GetStockScore method. Can I run this somewhere on startup? Index is not the best place at all
@@ -47,6 +48,7 @@ namespace StockScore.Controllers
 
             //Something with await here if possible
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
+            userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
             //To do what I want to do, I would have to assign them as a list of ints for each stock that the user owns? Doesn't seem right
 
             for (int i = 0; i < userViewModel.Stocks.Count(); i++ )
@@ -55,11 +57,15 @@ namespace StockScore.Controllers
                 Searches search = new Searches();
                 search.Symbol = userViewModel.Stocks[i].StockSymbol;
                 search.TimeFrame = "Week";
-                if (i <= int.Parse(userViewModel.Stocks[i].PurchaseDate))
+                int stockScoreLimit = int.Parse(userViewModel.Stocks[i].PurchaseDate);
+                List<int> allScores = scoring.GetStockScore(search);
+                userViewModel.Stocks[i].Scores = new List<int>();
+                for (int j = 0; j < stockScoreLimit; j++)
                 {
-                    userViewModel.Stocks[i].Scores = new List<int>();
-                    userViewModel.Stocks[i].Scores = scoring.GetStockScore(search);
+                    //Not ideal because of big O, but works for now
+                    userViewModel.Stocks[i].Scores.Add(allScores[j]);
                 }
+                //How to consolidate all scores? Or do I want to list each one individually on a graph?
             }
             //Make this its own method??
 

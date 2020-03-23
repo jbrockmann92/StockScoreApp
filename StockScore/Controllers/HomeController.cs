@@ -38,7 +38,7 @@ namespace StockScore.Controllers
                 {
                     Searches search = new Searches();
                     search.Symbol = top_Stocks.possibleTopStocks[i];
-                    search.Score = scoring.GetGoogleScore(search);
+                    search.Score = 2;   //scoring.GetGoogleScore(search); Bring this back too!
                     unsortedStocks.Add(search);
                 }
 
@@ -72,11 +72,13 @@ namespace StockScore.Controllers
                     }
                 }
 
-                foreach (string[] person in peopleToContact)
-                {
-                    SendSimpleMessage(person);
-                    //I think it's running twice on sign in right now. Fix that
-                }
+                //foreach (string[] person in peopleToContact)
+                //{
+                //    SendSimpleMessage(person);
+                //    //I think it's running twice on sign in right now. Fix that
+                //}
+
+                //Make sure to bring this back or email won't work!!
 
                 return Redirect("./Identity/Account/Login");
             }
