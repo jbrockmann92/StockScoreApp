@@ -24,12 +24,23 @@ namespace StockScore.Controllers
         public async Task<IActionResult> Index(int? id)
         {
             UserViewModel model = new UserViewModel();
+            Scoring scoring = new Scoring();
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             model.Id = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
             model.Searches = _context.Searches.Where(s => s.UserId == model.Id).ToList();
             model.Search = _context.Searches.Where(s => s.UserId == model.Id).ToList().FirstOrDefault();
+
+            //Put here something that goes through and does a new seach for the given symbol, but sets the forPrevious or whatever bool to true.
+            //That way it will return the Google results going back in time by week. I think
+
+            model.PastMonthScores = scoring.GetStockScore(model.Searches[model.Searches.Count - 1]);
+            //Might want to do LastOrDefault there
+
+            //I think I want to do all the 4x logic in the Scoring Class
+
+
 
             if (id != 0)
             {

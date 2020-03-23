@@ -35,7 +35,7 @@ namespace StockScore
 
                 var response = client.Get(request);
 
-                stockScores = GetOpenValues(response); //Opening values by day
+                stockScores = GetOpenValues(response, search); //Opening values by day
 
                 //Want something also that checks if the stock is going up or down?
             }
@@ -45,7 +45,7 @@ namespace StockScore
 
                 var response = client.Get(request);
 
-                stockScores = GetOpenValues(response); //Opening values by week
+                stockScores = GetOpenValues(response, search); //Opening values by week
 
                 //Want something also that checks if the stock is going up or down?
             }
@@ -55,7 +55,7 @@ namespace StockScore
 
                 var response = client.Get(request);
 
-                stockScores = GetOpenValues(response); //Opening values by month
+                stockScores = GetOpenValues(response, search); //Opening values by month
 
                 //Want something also that checks if the stock is going up or down?
                 //Probably could just take it in quarters, average the quarters, and assign to variables, the see what order they come out
@@ -78,6 +78,9 @@ namespace StockScore
                 new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://www.bloomberg.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
                 new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://finance.yahoo.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
                 new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&daterestrict=d[1]&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market") };
+            
+
+            
             for (int i = 0; i < 4; i++)
             {
                 var response = client.Get(requests[i]);
@@ -126,11 +129,16 @@ namespace StockScore
         //Without analyzing past weeks data I still fulfill the user stories. Move on after analyzing against positive or negative
         //then worry about deepening the algorithm
 
-        public List<int> GetOpenValues(IRestResponse response)
+        public List<int> GetOpenValues(IRestResponse response, Searches search)
         {
             JObject jobject = JObject.Parse(response.Content);
             var children = jobject.Last.First.Children().ToList();
             List<int> stockScores = new List<int>();
+
+            if (search.IsForPastScores)
+            {
+
+            }
 
             for (int i = 0; i < children.Count; i++)
             {

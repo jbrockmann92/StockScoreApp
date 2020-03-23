@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockScore.Data;
 
 namespace StockScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200323195600_AddedBoolToSearchesModel")]
+    partial class AddedBoolToSearchesModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +50,8 @@ namespace StockScore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "59553c4e-1537-4860-ae00-59d1dc66b13e",
-                            ConcurrencyStamp = "c09fef82-4348-4ba6-8091-4aa2a279901f",
+                            Id = "da128cab-d4e4-41da-aa20-e2a9fa6e0bfc",
+                            ConcurrencyStamp = "3b92c273-3e43-4962-ba50-2d3006842bf7",
                             Name = "User",
                             NormalizedName = "USER"
                         });
