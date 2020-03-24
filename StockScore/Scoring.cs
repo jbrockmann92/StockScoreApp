@@ -101,7 +101,18 @@ namespace StockScore
             var requests = new List<RestRequest>() { new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
                 new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://www.bloomberg.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
                 new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://finance.yahoo.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
-                new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&daterestrict=d[1]&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market") };
+                new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://www.forbes.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market") };
+
+            if (search.IsForPastScores)
+            {
+                for (int i = 1; i < 5; i++)
+                {
+                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
+                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://www.bloomberg.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
+                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://finance.yahoo.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
+                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://www.forbes.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
+                }
+            }
             
 
             
@@ -113,10 +124,11 @@ namespace StockScore
                 for (int j = 0; j < objString.Count(); j++)
                 {
                     jObjects.Add(objString[j]);
-                    //Not ideal for (0)n notation, but should work for now
-                    //Looks like I need an await here somewhere. It's not working unless I have break points here
                 }
             }
+
+
+            //Probably need to write some logic here or in CheckAgainstWords that will divide the score by 5 or something so Week searches won't be 5 times as high
 
             int score = CheckAgainstWords(jObjects);
             //Something about testing against the Words class and assigning score. How to do for each week in the past?
