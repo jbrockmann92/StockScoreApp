@@ -41,28 +41,28 @@ namespace StockScore
             }
             else if (search.TimeFrame == "Week")
             {
-                if (search.IsForPastScores == false)
-                {
+                //if (search.IsForPastScores == false)
+                //{
                     request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
 
                     var response = client.Get(request);
 
                     stockScores = GetOpenValues(response, search); //Opening values by week
-                }
+                //}
 
                 //Maybe can only be if statement that runs after what's above?
-                else if (search.IsForPastScores)
-                {
-                    //4x by week for the past week. Store in list of List<int>?
-                    for (int i = 0; i < 5; i++)
-                    {
-                        request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7*i).ToString("yyyyMMdd")) + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
-                        //Will return requests that are each 7 days earlier for each loop
-                        var response = client.Get(request);
+                //else if (search.IsForPastScores)
+                //{
+                //    //4x by week for the past week. Store in list of List<int>?
+                //    for (int i = 0; i < 5; i++)
+                //    {
+                //        request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
+                //        //Will return requests that are each 7 days earlier for each loop
+                //        var response = client.Get(request);
 
-                        stockScores = GetOpenValues(response, search);
-                    }
-                }
+                //        stockScores = GetOpenValues(response, search);
+                //    }
+                //}
 
                 //Want something also that checks if the stock is going up or down?
             }
@@ -83,12 +83,19 @@ namespace StockScore
             //Calculate things here. stockScores will have all necessary values by this point
             googleScore = GetGoogleScore(search);
 
+            for (int i = 0; i < 10; i++)
+            {
+                //Logic to factor in the Google score based on the last 10? stock values
+            }
+
             return stockScores;
         }
 
         public int GetGoogleScore(Searches search)
         {
             List<JToken> jObjects = new List<JToken>();
+
+            //"&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7*i).ToString("yyyyMMdd")) +  Need this in the Google requests if IsForPastSearches is true
 
             var client = new RestClient("https://www.googleapis.com/");
             var requests = new List<RestRequest>() { new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
