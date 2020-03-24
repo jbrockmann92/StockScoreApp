@@ -64,7 +64,7 @@ namespace StockScore.Controllers
 
             _context.Add(user_Stocks);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Users", "Index");
+            return RedirectToAction("Index", "Users");
         }
 
         // GET: User_Stocks/Edit/5

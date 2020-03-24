@@ -14,15 +14,6 @@ namespace StockScore
     {
         public List<int> GetStockScore(Searches search)
         {
-            //API call
-            //Web Crawler/Google search
-            //Positive and negative words(??) to test against
-
-            //Logic to compare them and assign that total to the score int
-            //Return a letter grade instead?
-
-            //Probably need a different api request if they choose a year time frame
-
             int googleScore;
             List<int> stockScores = new List<int>();
             var client = new RestClient("https://www.alphavantage.co/");
@@ -41,28 +32,12 @@ namespace StockScore
             }
             else if (search.TimeFrame == "Week")
             {
-                //if (search.IsForPastScores == false)
-                //{
-                    request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
 
-                    var response = client.Get(request);
+                request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
 
-                    stockScores = GetOpenValues(response, search); //Opening values by week
-                //}
+                var response = client.Get(request);
 
-                //Maybe can only be if statement that runs after what's above?
-                //else if (search.IsForPastScores)
-                //{
-                //    //4x by week for the past week. Store in list of List<int>?
-                //    for (int i = 0; i < 5; i++)
-                //    {
-                //        request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
-                //        //Will return requests that are each 7 days earlier for each loop
-                //        var response = client.Get(request);
-
-                //        stockScores = GetOpenValues(response, search);
-                //    }
-                //}
+                stockScores = GetOpenValues(response, search); //Opening values by week
 
                 //Want something also that checks if the stock is going up or down?
             }
@@ -78,14 +53,19 @@ namespace StockScore
                 //Probably could just take it in quarters, average the quarters, and assign to variables, the see what order they come out
             }
 
-            //Something like take every 7 and search them against Google articles for 1 week ago, 2 weeks ago, etc.
-
-            //Calculate things here. stockScores will have all necessary values by this point
             googleScore = GetGoogleScore(search);
 
             for (int i = 0; i < 10; i++)
             {
                 //Logic to factor in the Google score based on the last 10? stock values
+                //Compare over the last couple of weeks, see if it's going up or down, then compare that to the Google score, whether it's optimistic or not?
+                var stockDirection = ((stockScores[stockScores.Count() - 3] + stockScores[stockScores.Count() - 2]) / 2) / stockScores[stockScores.Count() - 1];
+                //Checks pretty crudely if it's going up or down
+
+                if (stockDirection > 1)
+                {
+                    //Bad sign. Lower is trending up
+                }
             }
 
             return stockScores;
