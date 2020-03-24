@@ -51,6 +51,7 @@ namespace StockScore.Controllers
                 search.TimeFrame = "Week";
 
                 List<int> allScores = scoring.GetStockScore(search);
+                //Considre just returning an int here. Can just take index 0 for now
                 userViewModel.Stocks[i].Scores = new List<int>();
                 int stockScoreLimit = int.Parse(userViewModel.Stocks[i].PurchaseDate);
                 for (int j = 0; j < stockScoreLimit; j++)

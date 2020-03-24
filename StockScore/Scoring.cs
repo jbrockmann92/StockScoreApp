@@ -54,19 +54,16 @@ namespace StockScore
             }
 
             googleScore = GetGoogleScore(search);
+            var stockDirection = stockScores[stockScores.Count() - 1] / ((stockScores[stockScores.Count() - 4] + stockScores[stockScores.Count() - 3] + stockScores[stockScores.Count() - 2]) / 3);
+            //Checks pretty crudely if it's going up or down
 
             for (int i = 0; i < 10; i++)
             {
-                //Logic to factor in the Google score based on the last 10? stock values
-                //Compare over the last couple of weeks, see if it's going up or down, then compare that to the Google score, whether it's optimistic or not?
-                var stockDirection = ((stockScores[stockScores.Count() - 3] + stockScores[stockScores.Count() - 2]) / 2) / stockScores[stockScores.Count() - 1];
-                //Checks pretty crudely if it's going up or down
+                stockScores[i] = googleScore * stockDirection;
+                //Higher for stockDirection is good, trending up
 
-                if (stockDirection > 1)
-                {
-                    //Bad sign. Lower is trending up
-                }
             }
+            //This is basically right, but there's a lot more to be done
 
             return stockScores;
         }
@@ -166,11 +163,6 @@ namespace StockScore
             JObject jobject = JObject.Parse(response.Content);
             var children = jobject.Last.First.Children().ToList();
             List<int> stockScores = new List<int>();
-
-            if (search.IsForPastScores)
-            {
-
-            }
 
             for (int i = 0; i < children.Count; i++)
             {
