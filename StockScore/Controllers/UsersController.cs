@@ -31,20 +31,17 @@ namespace StockScore.Controllers
             var applicationDbContext = _context.User.Include(u => u.IdentityUser);
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userViewModel = new UserViewModel();
-            userViewModel.User = _context.User.Where(u => u.UserId == userId).FirstOrDefault();
 
             var user = _context.User.FirstOrDefault(a => a.UserId == userId);
             if (user is null)
             {
                 return RedirectToAction("Create");
             }
+
+            userViewModel.User = _context.User.Where(u => u.UserId == userId).FirstOrDefault();
             userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
             userViewModel.User.FirstName = user.FirstName;
-
-            //Something with await here if possible
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
-            userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
-            //To do what I want to do, I would have to assign them as a list of ints for each stock that the user owns? Doesn't seem right
 
             for (int i = 0; i < userViewModel.Stocks.Count(); i++ )
             {
@@ -70,6 +67,8 @@ namespace StockScore.Controllers
                 userViewModel.Stocks.Add(new User_Stocks() { });
                 userViewModel.Stocks[0].Scores = new List<int>() { 0, 0, 0, 0, 0, 0};
                 //Just make it meaningless values? 
+
+            //Not very nice, but keeps it from erroring out
             }
 
             return View(userViewModel);
@@ -82,25 +81,17 @@ namespace StockScore.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Searches search = new Searches();
+            Scoring scoring = new Scoring();
+
             search.Symbol = user.Search.Symbol;
             search.TimeFrame = user.Search.TimeFrame;
             search.UserId = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
-            Scoring scoring = new Scoring();
-            //This should work
-
-            //Something here with if statements that will test if the timeframe is weekly or yearly and return based on those instead
-
             search.Score = scoring.GetGoogleScore(search);
 
             _context.Searches.Add(search);
             await _context.SaveChangesAsync();
-            //If I'm going to add the whole search, I need to have the api call and take in the parameters
-            //on the Index page. Seems possible
-
-            //This should work, as long as the await works like I think it does
 
             return RedirectToAction("Index", "Searches", user);
-            //info is not being stored once the redirect happens. Have to reassign in that controller? Why pass the parameter then?
         }
 
 
