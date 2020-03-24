@@ -43,19 +43,21 @@ namespace StockScore.Controllers
             userViewModel.User.FirstName = user.FirstName;
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
 
-            for (int i = 0; i < userViewModel.Stocks.Count(); i++ )
+            for (int i = 0; i < userViewModel.Stocks.Count(); i++)
             {
                 Scoring scoring = new Scoring();
                 Searches search = new Searches();
                 search.Symbol = userViewModel.Stocks[i].StockSymbol;
                 search.TimeFrame = "Week";
-                int stockScoreLimit = int.Parse(userViewModel.Stocks[i].PurchaseDate);
+
                 List<int> allScores = scoring.GetStockScore(search);
                 userViewModel.Stocks[i].Scores = new List<int>();
+                int stockScoreLimit = int.Parse(userViewModel.Stocks[i].PurchaseDate);
                 for (int j = 0; j < stockScoreLimit; j++)
                 {
                     //Not ideal because of big O, but works for now
                     userViewModel.Stocks[0].Scores.Add(0);
+                    //This will add an extra 0 on the end I think after it goes the first time
                     userViewModel.Stocks[0].Scores[j] += allScores[j];
                     //Probably works
                 }
@@ -86,7 +88,8 @@ namespace StockScore.Controllers
             search.Symbol = user.Search.Symbol;
             search.TimeFrame = user.Search.TimeFrame;
             search.UserId = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
-            search.Score = scoring.GetGoogleScore(search);
+            search.Score = scoring.GetStockScore(search)[0];
+            //Will return the first in the list of scores
 
             _context.Searches.Add(search);
             await _context.SaveChangesAsync();

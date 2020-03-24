@@ -41,11 +41,28 @@ namespace StockScore
             }
             else if (search.TimeFrame == "Week")
             {
-                request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
+                if (search.IsForPastScores == false)
+                {
+                    request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
 
-                var response = client.Get(request);
+                    var response = client.Get(request);
 
-                stockScores = GetOpenValues(response, search); //Opening values by week
+                    stockScores = GetOpenValues(response, search); //Opening values by week
+                }
+
+                //Maybe can only be if statement that runs after what's above?
+                else if (search.IsForPastScores)
+                {
+                    //4x by week for the past week. Store in list of List<int>?
+                    for (int i = 0; i < 5; i++)
+                    {
+                        request = new RestRequest("query?function=TIME_SERIES_WEEKLY&symbol=" + search.Symbol + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7*i).ToString("yyyyMMdd")) + "&apikey=" + APIKeys.AVKey, DataFormat.Json);
+                        //Will return requests that are each 7 days earlier for each loop
+                        var response = client.Get(request);
+
+                        stockScores = GetOpenValues(response, search);
+                    }
+                }
 
                 //Want something also that checks if the stock is going up or down?
             }

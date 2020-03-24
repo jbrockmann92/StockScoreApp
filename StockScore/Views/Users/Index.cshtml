@@ -57,33 +57,37 @@
         </form>
     </center>
 
+    <div>
+        <a asp-controller="User_Stocks" asp-action="Create">Add more stocks to your portfolio</a>
+    </div>
+
     <div id="PerformanceChart" style="width: 900px; height: 500px"></div>
     @*Some kind of onClick event would be good here that would list all the stocks in the portfolio*@
 
 
-        <table class="table">
-            <h3>
-                Our Top Recommendations:
-            </h3>
-            <tr>
-                <td>
-                    @Model.top_Stocks.NumberOne
-                    @*Find a way to make these clickable as searches*@
-                </td>
-                <td>
-                    @Model.top_Stocks.NumberTwo
-                </td>
-                <td>
-                    @Model.top_Stocks.NumberThree
-                </td>
-                <td>
-                    @Model.top_Stocks.NumberFour
-                </td>
-                <td>
-                    @*Something to search for this stock*@
-                    @*Something that will show the stock's open value for today?*@
-                </td>
-            </tr>
-        </table>
+    <table class="table">
+        <h3>
+            Our Top Recommendations:
+        </h3>
+        <tr>
+            <td>
+                @Model.top_Stocks.NumberOne
+                @*Find a way to make these clickable as searches*@
+            </td>
+            <td>
+                @Model.top_Stocks.NumberTwo
+            </td>
+            <td>
+                @Model.top_Stocks.NumberThree
+            </td>
+            <td>
+                @Model.top_Stocks.NumberFour
+            </td>
+            <td>
+                @*Something to search for this stock*@
+                @*Something that will show the stock's open value for today?*@
+            </td>
+        </tr>
+    </table>
 
 </body>

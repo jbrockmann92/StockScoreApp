@@ -35,12 +35,11 @@ namespace StockScore.Controllers
             //Put here something that goes through and does a new seach for the given symbol, but sets the forPrevious or whatever bool to true.
             //That way it will return the Google results going back in time by week. I think
 
+            model.Searches[model.Searches.Count - 1].IsForPastScores = true;
             model.PastMonthScores = scoring.GetStockScore(model.Searches[model.Searches.Count - 1]);
-            //Might want to do LastOrDefault there
 
-            //I think I want to do all the 4x logic in the Scoring Class
-
-
+            model.Searches[model.Searches.Count - 1].IsForPastScores = false;
+            //Might not need to do? Won't save updates in db unless I save them?
 
             if (id != 0)
             {
