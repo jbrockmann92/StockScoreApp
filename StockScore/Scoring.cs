@@ -103,6 +103,8 @@ namespace StockScore
                 new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://finance.yahoo.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
                 new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://www.forbes.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market") };
 
+            //This will run twice for each one right now. Once when it's first called, once when it goes through to get the past month
+
             if (search.IsForPastScores)
             {
                 for (int i = 1; i < 5; i++)
@@ -116,15 +118,18 @@ namespace StockScore
             
 
             
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < requests.Count; i++)
             {
+                List<JToken> tempJObjects = new List<JToken>();
                 var response = client.Get(requests[i]);
                 JObject jObject = JObject.Parse(response.Content);
                 var objString = jObject["items"].ToList();
                 for (int j = 0; j < objString.Count(); j++)
                 {
-                    jObjects.Add(objString[j]);
+                    tempJObjects.Add(objString[j]);
                 }
+                jObjects = tempJObjects;
+                //Currently erroring after the second time through when it's larger than 4
             }
 
 
@@ -135,27 +140,40 @@ namespace StockScore
             //JObject jobject = JObject.Parse(response.Content);
             //var objString = jobject["items"].ToList();
 
+            if (search.IsForPastScores)
+            {
+                score /= 5;
+                //I think this will work here. Divide by 5 only if it's the time through to check the score
+            }
+
             return score;
         }
 
         public int CheckAgainstWords(List<JToken> jObjects)
         {
             int score = 0;
-            for (int i = 0; i < Words.negativeWords.Length; i++)
+            for (int i = 0; i < jObjects.Count(); i++)
             {
                 var jObject = jObjects[i].ToString().ToLower();
-                if (jObject.Contains(Words.negativeWords[i]))
+                //Only contains 9. But it's trying to run 20 times
+                for (int j = 0; j < Words.negativeWords.Length; j++)
                 {
-                    score--;
+                    if (jObject.Contains(Words.negativeWords[j]))
+                    {
+                        score--;
+                    }
                 }
             }
 
-            for (int i = 0; i < Words.positiveWords.Length; i++)
+            for (int i = 0; i < jObjects.Count(); i++)
             {
                 var jObject = jObjects[i].ToString().ToLower();
-                if (jObject.Contains(Words.positiveWords[i]))
+                for (int j = 0; j < Words.positiveWords.Length; j++)
                 {
-                    score++;
+                    if (jObject.Contains(Words.positiveWords[j]))
+                    {
+                        score++;
+                    }
                 }
             }
 
