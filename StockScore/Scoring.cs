@@ -94,9 +94,6 @@ namespace StockScore
         public int GetGoogleScore(Searches search)
         {
             List<JToken> jObjects = new List<JToken>();
-
-            //"&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7*i).ToString("yyyyMMdd")) +  Need this in the Google requests if IsForPastSearches is true
-
             var client = new RestClient("https://www.googleapis.com/");
             var requests = new List<RestRequest>() { new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
                 new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&linksite=https://www.bloomberg.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"),
@@ -109,10 +106,10 @@ namespace StockScore
             {
                 for (int i = 1; i < 5; i++)
                 {
-                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
-                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://www.bloomberg.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
-                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://finance.yahoo.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
-                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=review-date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://www.forbes.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
+                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
+                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://www.bloomberg.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
+                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://finance.yahoo.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
+                    requests.Add(new RestRequest("customsearch/v1?key=" + APIKeys.GoogleKey + "&sort=date:r::" + long.Parse(DateTime.Now.Date.AddDays(-7 * i).ToString("yyyyMMdd")) + "&linksite=https://www.forbes.com&cx=006556387307943419452:v8lfespynzs&q=" + search.Symbol + " stock performance stock market"));
                 }
             }
             
@@ -124,6 +121,7 @@ namespace StockScore
                 var response = client.Get(requests[i]);
                 JObject jObject = JObject.Parse(response.Content);
                 var objString = jObject["items"].ToList();
+                //The 5th iteration does not have anything at "items." Why? What is it getting back from Google?
                 for (int j = 0; j < objString.Count(); j++)
                 {
                     tempJObjects.Add(objString[j]);

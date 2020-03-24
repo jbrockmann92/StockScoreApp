@@ -48,21 +48,22 @@
                 <input style="padding-top: inherit; padding-bottom: inherit" asp-for="Search.Symbol" class="form-control" />
             </div>
             <div>
-                <label style="padding-top: inherit; padding-bottom: inherit; font-size: x-large" asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Month, or Year</label>
+                <label style="padding-top: inherit; padding-bottom: inherit; font-size: x-large" asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Week, or Year</label>
                 <input style="padding-top: inherit; padding-bottom: inherit" asp-for="Search.TimeFrame" class="form-control" />
             </div>
             <div>
                 <button style="padding-top: inherit; padding-bottom: inherit" type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
+
+        <div id="PerformanceChart" style="width: 900px; height: 500px"></div>
+        @*Some kind of onClick event would be good here that would list all the stocks in the portfolio*@
+
     </center>
 
     <div>
         <a asp-controller="User_Stocks" asp-action="Create">Add more stocks to your portfolio</a>
     </div>
-
-    <div id="PerformanceChart" style="width: 900px; height: 500px"></div>
-    @*Some kind of onClick event would be good here that would list all the stocks in the portfolio*@
 
 
     <table class="table">
