@@ -43,36 +43,7 @@ namespace StockScore.Controllers
             userViewModel.User.FirstName = user.FirstName;
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
 
-            for (int i = 0; i < userViewModel.Stocks.Count(); i++)
-            {
-                Scoring scoring = new Scoring();
-                Searches search = new Searches();
-                search.Symbol = userViewModel.Stocks[i].StockSymbol;
-                search.TimeFrame = "Week";
-
-                List<int> allScores = scoring.GetStockScore(search);
-                //Considre just returning an int here. Can just take index 0 for now
-                userViewModel.Stocks[i].Scores = new List<int>();
-                int stockScoreLimit = int.Parse(userViewModel.Stocks[i].PurchaseDate);
-                for (int j = 0; j < stockScoreLimit; j++)
-                {
-                    //Not ideal because of big O, but works for now
-                    userViewModel.Stocks[0].Scores.Add(0);
-                    //This will add an extra 0 on the end I think after it goes the first time
-                    userViewModel.Stocks[0].Scores[j] += allScores[j];
-                    //Probably works
-                }
-                //How to consolidate all scores? Or do I want to list each one individually on a graph?
-            }
-            //Make this its own method??
-            if (userViewModel.Stocks.Count() == 0)
-            {
-                userViewModel.Stocks.Add(new User_Stocks() { });
-                userViewModel.Stocks[0].Scores = new List<int>() { 0, 0, 0, 0, 0, 0};
-                //Just make it meaningless values? 
-
-            //Not very nice, but keeps it from erroring out
-            }
+            userViewModel = GetPastMonthScores(userViewModel);
 
             return View(userViewModel);
         }
@@ -229,6 +200,42 @@ namespace StockScore.Controllers
         private bool UserExists(int id)
         {
             return _context.User.Any(e => e.Id == id);
+        }
+
+        public UserViewModel GetPastMonthScores(UserViewModel userViewModel)
+        {
+            for (int i = 0; i < userViewModel.Stocks.Count(); i++)
+            {
+                Scoring scoring = new Scoring();
+                Searches search = new Searches();
+                search.Symbol = userViewModel.Stocks[i].StockSymbol;
+                search.TimeFrame = "Week";
+
+                List<int> allScores = scoring.GetStockScore(search);
+                //Considre just returning an int here. Can just take index 0 for now
+                userViewModel.Stocks[i].Scores = new List<int>();
+                int stockScoreLimit = int.Parse(userViewModel.Stocks[i].PurchaseDate);
+                for (int j = 0; j < stockScoreLimit; j++)
+                {
+                    //Not ideal because of big O, but works for now
+                    userViewModel.Stocks[0].Scores.Add(0);
+                    //This will add an extra 0 on the end I think after it goes the first time
+                    userViewModel.Stocks[0].Scores[j] += allScores[j];
+                    //Probably works
+                }
+                //How to consolidate all scores? Or do I want to list each one individually on a graph?
+            }
+            //Make this its own method??
+            if (userViewModel.Stocks.Count() == 0)
+            {
+                userViewModel.Stocks.Add(new User_Stocks() { });
+                userViewModel.Stocks[0].Scores = new List<int>() { 0, 0, 0, 0, 0, 0 };
+                //Just make it meaningless values? 
+
+                //Not very nice, but keeps it from erroring out
+            }
+
+            return userViewModel;
         }
     }
 }

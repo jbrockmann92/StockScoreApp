@@ -38,47 +38,15 @@ namespace StockScore.Controllers
                 {
                     Searches search = new Searches();
                     search.Symbol = top_Stocks.possibleTopStocks[i];
-                    search.Score = scoring.GetGoogleScore(search);
+                    search.Score = 10; //scoring.GetGoogleScore(search);
                     unsortedStocks.Add(search);
                 }
 
                 top_Stocks = SortStocks(unsortedStocks);
-                //top_Stocks.UserId = userId;
                 _context.Top_Stocks.Add(top_Stocks);
                 await _context.SaveChangesAsync();
-                //Probably don't need to assign this a user, but I will for now
 
-                //By this point, sortedStocks should contain the four strings that are the stock symbols for the highest scoring stocks
-
-                //Store these in the db, then you can grab them by the signed in user's id in the UsersController. Store as Top_Stocks
-                List<string[]> peopleToContact = new List<string[]>();
-
-                for (int i = 0; i < _context.User.Count(); i++)
-                {
-                    string[] person = new string[3];
-                    var UserList = _context.User.ToList();
-                    var IdUserList = _context.Users.ToList();
-                    for (int j = 0; j < UserList.Count(); j++)
-                    {
-                        person[0] = UserList[j].FirstName + " " + UserList[j].LastName;
-                        person[1] = IdUserList.Where(u => u.Id == UserList[j].UserId).FirstOrDefault().Email;
-                        if (j < 4)
-                        {
-                            var stockList = _context.Top_Stocks.ToList();
-                            person[2] = stockList[j].NumberOne + " " + stockList[j].NumberTwo + " " + stockList[j].NumberThree + " " + stockList[j].NumberFour;
-                        }
-                        peopleToContact.Add(person);
-                        //Not sure if this is disgusting or beautiful.. But it works
-                    }
-                }
-
-                //foreach (string[] person in peopleToContact)
-                //{
-                //    SendSimpleMessage(person);
-                //    //I think it's running twice on sign in right now. Fix that
-                //}
-
-                //Make sure to bring this back or email won't work!!
+                SendEmails();
 
                 return Redirect("./Identity/Account/Login");
             }
@@ -112,6 +80,38 @@ namespace StockScore.Controllers
             top_Stocks.NumberFour = sortedSearches[3].Symbol.ToUpper();
 
             return top_Stocks;
+        }
+
+        public void SendEmails()
+        {
+            List<string[]> peopleToContact = new List<string[]>();
+
+            for (int i = 0; i < _context.User.Count(); i++)
+            {
+                string[] person = new string[3];
+                var UserList = _context.User.ToList();
+                var IdUserList = _context.Users.ToList();
+                for (int j = 0; j < UserList.Count(); j++)
+                {
+                    person[0] = UserList[j].FirstName + " " + UserList[j].LastName;
+                    person[1] = IdUserList.Where(u => u.Id == UserList[j].UserId).FirstOrDefault().Email;
+                    if (j < 4)
+                    {
+                        var stockList = _context.Top_Stocks.ToList();
+                        person[2] = stockList[j].NumberOne + " " + stockList[j].NumberTwo + " " + stockList[j].NumberThree + " " + stockList[j].NumberFour;
+                    }
+                    peopleToContact.Add(person);
+                    //Not sure if this is disgusting or beautiful.. But it works
+                }
+            }
+
+            //foreach (string[] person in peopleToContact)
+            //{
+            //    SendSimpleMessage(person);
+            //    //I think it's running twice on sign in right now. Fix that
+            //}
+
+            //Make sure to bring this back or email won't work!!
         }
 
         public static IRestResponse SendSimpleMessage(string[] personToContact)

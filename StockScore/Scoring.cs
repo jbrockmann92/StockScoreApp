@@ -14,6 +14,8 @@ namespace StockScore
     {
         public List<int> GetStockScore(Searches search)
         {
+            //I think it does make sense for this to be a List<int>. If I just need the score I can grab the last index, and if I need the list I have it
+            //Maybe should make two methods?
             int googleScore;
             List<int> stockScores = new List<int>();
             var client = new RestClient("https://www.alphavantage.co/");
