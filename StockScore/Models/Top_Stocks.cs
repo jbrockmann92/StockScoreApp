@@ -15,7 +15,6 @@ namespace StockScore.Models
         public string NumberTwo { get; set; }
         public string NumberThree { get; set; }
         public string NumberFour { get; set; }
-        public DateTime date { get; set; }
 
         public string[] possibleTopStocks = new string[] { "MMM", "AXP", "AAPL", "BA", "CAT", "CVX" };
 

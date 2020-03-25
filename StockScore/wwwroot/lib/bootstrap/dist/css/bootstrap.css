@@ -4957,7 +4957,7 @@ input[type="button"].btn-block {
 }
 
 .navbar-light .navbar-brand {
-  color: #000;
+  color: lightgray;
 }
 
 .navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {
@@ -4980,7 +4980,7 @@ input[type="button"].btn-block {
 .navbar-light .navbar-nav .active > .nav-link,
 .navbar-light .navbar-nav .nav-link.show,
 .navbar-light .navbar-nav .nav-link.active {
-  color: #000;
+  color: lightgray;
 }
 
 .navbar-light .navbar-toggler {
@@ -10611,8 +10611,8 @@ a.text-danger:hover, a.text-danger:focus {
   color: #b52b27 !important;
 }
 
-.text-light {
-  color: #F8F5F0 !important;
+.text-maroon {
+  color: maroon;
 }
 
 a.text-light:hover, a.text-light:focus {

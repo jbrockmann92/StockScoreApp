@@ -48,24 +48,6 @@ namespace StockScore.Controllers
             return View(model);
         }
 
-        // GET: Searches/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var searches = await _context.Searches
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (searches == null)
-            {
-                return NotFound();
-            }
-
-            return View(searches);
-        }
-
         // GET: Searches/Create
         public IActionResult Create()
         {

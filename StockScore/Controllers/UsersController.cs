@@ -31,8 +31,8 @@ namespace StockScore.Controllers
             var applicationDbContext = _context.User.Include(u => u.IdentityUser);
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userViewModel = new UserViewModel();
-
             var user = _context.User.FirstOrDefault(a => a.UserId == userId);
+
             if (user is null)
             {
                 return RedirectToAction("Create");
@@ -42,7 +42,6 @@ namespace StockScore.Controllers
             userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
             userViewModel.User.FirstName = user.FirstName;
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
-
             userViewModel = GetPastMonthScores(userViewModel);
 
             return View(userViewModel);

@@ -55,9 +55,6 @@ namespace StockScore
                 //Probably could just take it in quarters, average the quarters, and assign to variables, the see what order they come out
             }
 
-            //Might be able to do something about if it's in the db?
-            //Yes that should work. If it has an Id it's a search by stockScore, otherwise it's a search for the values?
-
             if (search.Id != 0)
             {
                 googleScore = GetGoogleScore(search);
@@ -66,8 +63,16 @@ namespace StockScore
 
                 for (int i = 0; i < 10; i++)
                 {
-                    stockScores[i] = i; //googleScore * stockDirection;
-                    //Need to change this
+                    stockScores[i] = googleScore * stockDirection;
+
+                    int oneOrZero = 1;
+                    if (i > i + 1)
+                    {
+                        oneOrZero = 0;
+                    }
+
+                    stockScores[i] += oneOrZero;
+                    //Need to get the score for the week based on the score as it relates to the other scores?
 
                 }
 
@@ -75,7 +80,6 @@ namespace StockScore
             }
 
             return stockScores;
-            //This makes it show the portfolio on the main page, but still not working for search. Returns all 0's, then the stock's value for today
         }
 
         public int GetGoogleScore(Searches search)
