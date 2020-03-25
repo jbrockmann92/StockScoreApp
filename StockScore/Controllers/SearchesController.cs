@@ -38,10 +38,7 @@ namespace StockScore.Controllers
 
             model.Searches[model.Searches.Count - 1].IsForPastScores = true;
             model.PastMonthScores = scoring.GetStockScore(model.Searches[model.Searches.Count - 1]);
-            //Might want to do some kind of await here. May be getting to Index page before it has the info back
-
             model.Searches[model.Searches.Count - 1].IsForPastScores = false;
-            //Might not need to do? Won't save updates in db unless I save them?
 
             if (id != 0)
             {

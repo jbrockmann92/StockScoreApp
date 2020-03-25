@@ -64,12 +64,10 @@ namespace StockScore
 
                 for (int i = 0; i < 10; i++)
                 {
-                    stockScores[i] = googleScore * stockDirection;
-                    //This won't work when I get to the graph on either page. The stockScores have to vary, but right now the last 10 are all the same
-                    //And this will return the scores, but that's not what I want for the main page. I want all the stock data
+                    stockScores[i] = i; //googleScore * stockDirection;
+                    //Need to change this
 
                 }
-                //This is basically right, but there's a lot more to be done
 
                 return stockScores;
             }

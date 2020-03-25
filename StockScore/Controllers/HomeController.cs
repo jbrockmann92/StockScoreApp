@@ -38,7 +38,7 @@ namespace StockScore.Controllers
                 {
                     Searches search = new Searches();
                     search.Symbol = top_Stocks.possibleTopStocks[i];
-                    search.Score = 2;   //scoring.GetGoogleScore(search); Bring this back too!
+                    search.Score = scoring.GetGoogleScore(search);
                     unsortedStocks.Add(search);
                 }
 
