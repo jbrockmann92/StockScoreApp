@@ -53,19 +53,29 @@ namespace StockScore
                 //Probably could just take it in quarters, average the quarters, and assign to variables, the see what order they come out
             }
 
-            googleScore = GetGoogleScore(search);
-            var stockDirection = stockScores[stockScores.Count() - 1] / ((stockScores[stockScores.Count() - 4] + stockScores[stockScores.Count() - 3] + stockScores[stockScores.Count() - 2]) / 3);
-            //Checks pretty crudely if it's going up or down
+            //Might be able to do something about if it's in the db?
+            //Yes that should work. If it has an Id it's a search by stockScore, otherwise it's a search for the values?
 
-            for (int i = 0; i < 10; i++)
+            if (search.Id != 0)
             {
-                stockScores[i] = googleScore * stockDirection;
-                //Higher for stockDirection is good, trending up
+                googleScore = GetGoogleScore(search);
+                var stockDirection = stockScores[stockScores.Count() - 1] / ((stockScores[stockScores.Count() - 4] + stockScores[stockScores.Count() - 3] + stockScores[stockScores.Count() - 2]) / 3);
+                //Checks pretty crudely if it's going up or down
 
+                for (int i = 0; i < 10; i++)
+                {
+                    stockScores[i] = googleScore * stockDirection;
+                    //This won't work when I get to the graph on either page. The stockScores have to vary, but right now the last 10 are all the same
+                    //And this will return the scores, but that's not what I want for the main page. I want all the stock data
+
+                }
+                //This is basically right, but there's a lot more to be done
+
+                return stockScores;
             }
-            //This is basically right, but there's a lot more to be done
 
             return stockScores;
+            //This makes it show the portfolio on the main page, but still not working for search. Returns all 0's, then the stock's value for today
         }
 
         public int GetGoogleScore(Searches search)
