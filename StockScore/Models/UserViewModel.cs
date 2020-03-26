@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,5 +19,7 @@ namespace StockScore.Models
         public Top_Stocks top_Stocks { get; set; }
         public List<int> PastMonthScores { get; set; }
         //Could probably be an array. No real reason to though. More flexible this way
+        [NotMapped]
+        public List<string> TimeFrame = new List<string>() {"Day", "Week", "Month"};
     }
 }

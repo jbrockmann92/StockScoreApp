@@ -31,6 +31,10 @@ namespace StockScore.Controllers
             Top_Stocks top_Stocks = new Top_Stocks();
             List<Searches> unsortedStocks = new List<Searches>();
 
+            //Will need to change once I've implemented time frame, but works for now
+
+            //May be better in the Startup class, but works here for now
+
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
             {
@@ -38,15 +42,40 @@ namespace StockScore.Controllers
                 {
                     Searches search = new Searches();
                     search.Symbol = top_Stocks.possibleTopStocks[i];
-                    search.Score = 10; //scoring.GetGoogleScore(search);
+                    search.Score = scoring.GetGoogleScore(search);
                     unsortedStocks.Add(search);
                 }
 
                 top_Stocks = SortStocks(unsortedStocks);
+                //top_Stocks.UserId = userId;
                 _context.Top_Stocks.Add(top_Stocks);
                 await _context.SaveChangesAsync();
+                //Probably don't need to assign this a user, but I will for now
 
-                SendEmails();
+                //By this point, sortedStocks should contain the four strings that are the stock symbols for the highest scoring stocks
+
+                //Store these in the db, then you can grab them by the signed in user's id in the UsersController. Store as Top_Stocks
+                List<string[]> peopleToContact = new List<string[]>();
+
+                for (int i = 0; i < _context.User.Count(); i++)
+                {
+                    string[] person = new string[2];
+                    var UserList = _context.User.ToList();
+                    var IdUserList = _context.Users.ToList();
+                    for (int j = 0; j < UserList.Count(); j++)
+                    {
+                        person[0] = UserList[j].FirstName + " " + UserList[j].LastName;
+                        person[1] = IdUserList.Where(u => u.Id == UserList[j].UserId).FirstOrDefault().Email;
+                        peopleToContact.Add(person);
+                        //Not sure if this is disgusting or beautiful.. But it works
+                    }
+                }
+
+                foreach (string[] person in peopleToContact)
+                {
+                    SendSimpleMessage(person);
+                    //I think it's running twice on sign in right now. Fix that
+                }
 
                 return Redirect("./Identity/Account/Login");
             }
@@ -82,38 +111,6 @@ namespace StockScore.Controllers
             return top_Stocks;
         }
 
-        public void SendEmails()
-        {
-            List<string[]> peopleToContact = new List<string[]>();
-
-            for (int i = 0; i < _context.User.Count(); i++)
-            {
-                string[] person = new string[3];
-                var UserList = _context.User.ToList();
-                var IdUserList = _context.Users.ToList();
-                for (int j = 0; j < UserList.Count(); j++)
-                {
-                    person[0] = UserList[j].FirstName + " " + UserList[j].LastName;
-                    person[1] = IdUserList.Where(u => u.Id == UserList[j].UserId).FirstOrDefault().Email;
-                    if (j < 4)
-                    {
-                        var stockList = _context.Top_Stocks.ToList();
-                        person[2] = stockList[j].NumberOne + " " + stockList[j].NumberTwo + " " + stockList[j].NumberThree + " " + stockList[j].NumberFour;
-                    }
-                    peopleToContact.Add(person);
-                    //Not sure if this is disgusting or beautiful.. But it works
-                }
-            }
-
-            //foreach (string[] person in peopleToContact)
-            //{
-            //    SendSimpleMessage(person);
-            //    //I think it's running twice on sign in right now. Fix that
-            //}
-
-            //Make sure to bring this back or email won't work!!
-        }
-
         public static IRestResponse SendSimpleMessage(string[] personToContact)
         {
             RestClient client = new RestClient();
@@ -122,12 +119,12 @@ namespace StockScore.Controllers
             new HttpBasicAuthenticator("api",
                                        APIKeys.MailgunKey);
             RestRequest request = new RestRequest();
-            request.AddParameter("domain", "sandboxfc0597be9eaa439ca18c08a8f738c777.mailgun.org", ParameterType.UrlSegment);
+            request.AddParameter("domain", "sandbox73857f42c79a49d9a93f8157620db6e9.mailgun.org", ParameterType.UrlSegment);
             request.Resource = "{domain}/messages";
-            request.AddParameter("from", "Mailgun Sandbox <postmaster@sandboxfc0597be9eaa439ca18c08a8f738c777.mailgun.org>");
-            request.AddParameter("to", "" + personToContact[0] + "<" + personToContact[1] + ">");
+            request.AddParameter("from", "Mailgun Sandbox <postmaster@sandbox73857f42c79a49d9a93f8157620db6e9.mailgun.org>");
+            request.AddParameter("to", personToContact[1]);
             request.AddParameter("subject", "Hello Jacob Brockmann");
-            request.AddParameter("text", "Hello " + personToContact[0] + ", Here are StockScore's top recommended stock purchases for today: " + personToContact[2]);
+            request.AddParameter("text", "Congratulations " + personToContact[0] + ", you just sent an email with Mailgun!  You are truly awesome!");
             request.Method = Method.POST;
             return client.Execute(request);
         }
