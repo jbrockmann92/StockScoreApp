@@ -51,11 +51,12 @@
                 <label style="padding-top: 5px; padding-bottom: 5px; font-size: x-large; color: darkblue" asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Week, or Year</label>
                 <input style="padding-top: 5px; padding-bottom: 5px" asp-for="Search.TimeFrame" class="form-control" />
             </div>
-            <div>
+            <div style="padding-bottom: 15px">
+                <label>Save this as a favorite search?</label>
                 @Html.CheckBoxFor(x => x.Search.IsFavorite)
             </div>
             <div>
-                <button style="padding-top: 10px; padding-bottom: inherit" type="submit" class="btn btn-primary">Search</button>
+                <button style="padding-bottom: inherit" type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
 
@@ -71,7 +72,7 @@
             Symbol
         </th>
         <th>
-            Score
+            Value When Searched
         </th>
         <th>
             Time Frame

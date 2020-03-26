@@ -40,7 +40,7 @@ namespace StockScore.Controllers
             searches = model.Searches;
             model.Searches = new List<Searches>();
 
-            for (int i = 0; i < 5 && i < model.Searches.Count(); i++)
+            for (int i = 0; i < 5 && i < searches.Count(); i++)
             {
                 model.Searches.Add(searches[i]);
             }

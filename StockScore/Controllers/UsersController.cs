@@ -59,9 +59,7 @@ namespace StockScore.Controllers
 
             search.Symbol = user.Search.Symbol;
             search.TimeFrame = user.Search.TimeFrame;
-
-            search.IsFavorite = true;
-            //Need to make different. Just for testing for now
+            search.IsFavorite = user.Search.IsFavorite;
 
             search.UserId = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
             search.Score = scoring.GetStockScore(search)[0];
