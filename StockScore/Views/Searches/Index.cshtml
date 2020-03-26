@@ -7,7 +7,26 @@
 
 <h1>Your search for @Model.Search.Symbol</h1>
 
-<img src="~/B.png">
+@{
+    switch (Model.PastMonthScores[0])
+    {
+        case 0:
+            <img src="~/F.png" />
+            break;
+        case 1:
+            <img src="~/D.png" />
+            break;
+        case 2:
+            <img src="~/C.png" />
+            break;
+        case 3:
+            <img src="~/B.png" />
+            break;
+        case 4:
+            <img src="~/A.png" />
+            break;
+    }
+}
 
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -29,11 +48,11 @@
         var options = {
             title: 'Stock Scores for the Past Month',
             legend: { position: 'bottom' }
-        };
+    };
 
-        var chart = new google.visualization.LineChart(document.getElementById('PerformanceChart'));
+    var chart = new google.visualization.LineChart(document.getElementById('PerformanceChart'));
 
-        chart.draw(data, options);
+    chart.draw(data, options);
     }
     </script>
 
@@ -43,15 +62,15 @@
     <table class="table">
         <h2>Your Previous Searches</h2>
         <thead>
-            <th>
-                Symbol
-            </th>
-            <th>
-                Score
-            </th>
-            <th>
-                Time Frame
-            </th>
+        <th>
+            Symbol
+        </th>
+        <th>
+            Score
+        </th>
+        <th>
+            Time Frame
+        </th>
         </thead>
         @foreach (var item in Model.Searches)
         {

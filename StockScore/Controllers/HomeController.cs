@@ -73,7 +73,7 @@ namespace StockScore.Controllers
 
                 foreach (string[] person in peopleToContact)
                 {
-                    SendSimpleMessage(person);
+                    SendSimpleMessage(person, top_Stocks);
                     //I think it's running twice on sign in right now. Fix that
                 }
 
@@ -111,7 +111,7 @@ namespace StockScore.Controllers
             return top_Stocks;
         }
 
-        public static IRestResponse SendSimpleMessage(string[] personToContact)
+        public static IRestResponse SendSimpleMessage(string[] personToContact, Top_Stocks top_Stocks)
         {
             RestClient client = new RestClient();
             client.BaseUrl = new System.Uri("https://api.mailgun.net/v3");
@@ -124,7 +124,11 @@ namespace StockScore.Controllers
             request.AddParameter("from", "Mailgun Sandbox <postmaster@sandbox73857f42c79a49d9a93f8157620db6e9.mailgun.org>");
             request.AddParameter("to", personToContact[1]);
             request.AddParameter("subject", "Hello Jacob Brockmann");
-            request.AddParameter("text", "Congratulations " + personToContact[0] + ", you just sent an email with Mailgun!  You are truly awesome!");
+            request.AddParameter("text", "Hello " + personToContact[0] + ", Here are the top recommended stocks for today:"
+                + top_Stocks.NumberOne + " "
+                + top_Stocks.NumberTwo + " "
+                + top_Stocks.NumberThree + " "
+                + top_Stocks.NumberFour);
             request.Method = Method.POST;
             return client.Execute(request);
         }
