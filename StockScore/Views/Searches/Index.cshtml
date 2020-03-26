@@ -7,7 +7,7 @@
 
 <h1>Your search for @Model.Search.Symbol</h1>
 
-<h2>The score for this stock is @Model.Searches[0].Score</h2>
+<img src="~/B.png">
 
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -40,25 +40,36 @@
 </head>
 
 <body>
-    @for (int i = Model.Searches.Count() - 1; i >= Model.Searches.Count(); i--)
-    {
-        <table class="table">
+    <table class="table">
+        <thead>
+            <th>
+                Symbol
+            </th>
+            <th>
+                Score
+            </th>
+            <th>
+                Time Frame
+            </th>
+        </thead>
+        @foreach (var item in Model.Searches)
+        {
             <tr>
                 <td>
-                    @Model.Searches[i].Symbol
+                    @item.Symbol
                 </td>
                 <td>
-                    @Model.Searches[i].Score
+                    @item.Score
                 </td>
                 <td>
-                    @Model.Searches[i].TimeFrame
+                    @item.TimeFrame
                 </td>
                 <td>
-                    <a asp-action="Index" asp-route-id="@Model.Searches[i].Id">Search this again</a>
+                    <a asp-action="Index" asp-route-id="@item.Id">Search this again</a>
                 </td>
             </tr>
-        </table>
-    }
+        }
+    </table>
 
     <div>
         <a asp-controller="User_Stocks" asp-action="Create">Add more stocks to your portfolio</a>

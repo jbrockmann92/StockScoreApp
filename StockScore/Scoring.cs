@@ -72,8 +72,6 @@ namespace StockScore
                     }
 
                     stockScores[i] += oneOrZero;
-                    //Need to get the score for the week based on the score as it relates to the other scores?
-
                 }
 
                 return stockScores;
@@ -112,27 +110,18 @@ namespace StockScore
                 var response = client.Get(requests[i]);
                 JObject jObject = JObject.Parse(response.Content);
                 var objString = jObject["items"].ToList();
-                //The 5th iteration does not have anything at "items." Why? What is it getting back from Google?
                 for (int j = 0; j < objString.Count(); j++)
                 {
                     tempJObjects.Add(objString[j]);
                 }
                 jObjects = tempJObjects;
-                //Currently erroring after the second time through when it's larger than 4
             }
 
-
-            //Probably need to write some logic here or in CheckAgainstWords that will divide the score by 5 or something so Week searches won't be 5 times as high
-
             int score = CheckAgainstWords(jObjects);
-            //Something about testing against the Words class and assigning score. How to do for each week in the past?
-            //JObject jobject = JObject.Parse(response.Content);
-            //var objString = jobject["items"].ToList();
 
             if (search.IsForPastScores)
             {
                 score /= 5;
-                //I think this will work here. Divide by 5 only if it's the time through to check the score
             }
 
             return score;
@@ -144,7 +133,6 @@ namespace StockScore
             for (int i = 0; i < jObjects.Count(); i++)
             {
                 var jObject = jObjects[i].ToString().ToLower();
-                //Only contains 9. But it's trying to run 20 times
                 for (int j = 0; j < Words.negativeWords.Length; j++)
                 {
                     if (jObject.Contains(Words.negativeWords[j]))
@@ -169,9 +157,6 @@ namespace StockScore
             return score;
         }
 
-        //Without analyzing past weeks data I still fulfill the user stories. Move on after analyzing against positive or negative
-        //then worry about deepening the algorithm
-
         public List<int> GetOpenValues(IRestResponse response, Searches search)
         {
             JObject jobject = JObject.Parse(response.Content);
@@ -181,10 +166,8 @@ namespace StockScore
             for (int i = 0; i < children.Count; i++)
             {
                 var open = children[i].First.First.First.ToString();
-                //Only gets the opening value at the moment, but will probably work for my purposes
                 float tempScore = float.Parse(open);
                 stockScores.Add((int)tempScore);
-                //This will be daily open values for the stock
             }
             return stockScores;
         }

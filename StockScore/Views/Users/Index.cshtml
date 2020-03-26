@@ -44,11 +44,11 @@
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div>
-                <label style="padding-top: 5px; padding-bottom: 5px; font-size: x-large" asp-for="Search.Symbol">Please enter a stock Symbol you'd like a score for</label>
+                <label style="padding-top: 5px; padding-bottom: 5px; font-size: x-large; color: darkred" asp-for="Search.Symbol">Please enter a stock Symbol you'd like a score for</label>
                 <input style="padding-top: 5px; padding-bottom: 5px" asp-for="Search.Symbol" class="form-control" />
             </div>
             <div>
-                <label style="padding-top: 5px; padding-bottom: 5px" font-size: x-large" asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Week, or Year</label>
+                <label style="padding-top: 5px; padding-bottom: 5px; font-size: x-large; color: darkblue" asp-for="Search.TimeFrame">Please enter the time frame you're looking to invest for. Day, Week, or Year</label>
                 <input style="padding-top: 5px; padding-bottom: 5px" asp-for="Search.TimeFrame" class="form-control" />
             </div>
             <div>

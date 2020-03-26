@@ -25,6 +25,7 @@ namespace StockScore.Controllers
         {
             UserViewModel model = new UserViewModel();
             Scoring scoring = new Scoring();
+            List<Searches> searches = new List<Searches>();
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -39,6 +40,15 @@ namespace StockScore.Controllers
             model.Searches[model.Searches.Count - 1].IsForPastScores = true;
             model.PastMonthScores = scoring.GetStockScore(model.Searches[model.Searches.Count - 1]);
             model.Searches[model.Searches.Count - 1].IsForPastScores = false;
+            model.Searches = model.Searches.OrderByDescending(s => s.Id).ToList();
+            model.Searches[0].Score = model.PastMonthScores[0];
+            searches = model.Searches;
+            model.Searches = new List<Searches>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                model.Searches[i] = searches[i];
+            }
 
             if (id != 0)
             {
