@@ -48,8 +48,8 @@ namespace StockScore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "bc3440e5-28ec-4670-bfa6-843b9c90dfd4",
-                            ConcurrencyStamp = "224d5496-85f8-4a4d-8194-65310c3f9492",
+                            Id = "4d645f7d-98fb-4cf7-a68a-6ba16780bc7c",
+                            ConcurrencyStamp = "11430f39-07ea-4c67-b9e9-afc7b5e4232b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -253,6 +253,9 @@ namespace StockScore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsForPastScores")
                         .HasColumnType("bit");

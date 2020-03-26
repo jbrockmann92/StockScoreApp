@@ -52,6 +52,9 @@
                 <input style="padding-top: 5px; padding-bottom: 5px" asp-for="Search.TimeFrame" class="form-control" />
             </div>
             <div>
+                @Html.CheckBoxFor(x => x.Search.IsFavorite)
+            </div>
+            <div>
                 <button style="padding-top: 10px; padding-bottom: inherit" type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
@@ -60,6 +63,38 @@
         @*Some kind of onClick event would be good here that would list all the stocks in the portfolio*@
 
     </center>
+
+    <table class="table">
+        <h2>Your Favorite Searches</h2>
+        <thead>
+        <th>
+            Symbol
+        </th>
+        <th>
+            Score
+        </th>
+        <th>
+            Time Frame
+        </th>
+        </thead>
+        @foreach (var item in Model.Searches)
+        {
+            <tr>
+                <td>
+                    @item.Symbol
+                </td>
+                <td>
+                    @item.Score
+                </td>
+                <td>
+                    @item.TimeFrame
+                </td>
+                <td>
+                    <a asp-controller="Searches" asp-action="Index" asp-route-id="@item.Id">Search this again</a>
+                </td>
+            </tr>
+        }
+    </table>
 
     <div style="padding-top: 20px; padding-bottom: 20px">
         <a asp-controller="User_Stocks" asp-action="Create">Add more stocks to your portfolio</a>

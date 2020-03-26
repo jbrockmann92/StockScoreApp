@@ -15,6 +15,7 @@ namespace StockScore.Models
         public float Score { get; set; }
         public string TimeFrame { get; set; }
         public bool IsForPastScores { get; set; }
+        public bool IsFavorite { get; set; }
 
         [ForeignKey("User")]
         public int UserId { get; set; }

@@ -42,6 +42,7 @@ namespace StockScore.Controllers
             userViewModel.Stocks = _context.User_Stocks.Where(u => u.UserId == userViewModel.User.Id).ToList();
             userViewModel.User.FirstName = user.FirstName;
             userViewModel.top_Stocks = _context.Top_Stocks.FirstOrDefault();
+            userViewModel.Searches = _context.Searches.Where(s => s.UserId == userViewModel.User.Id && s.IsFavorite == true).ToList();
             userViewModel = GetPastMonthScores(userViewModel);
 
             return View(userViewModel);
@@ -58,6 +59,10 @@ namespace StockScore.Controllers
 
             search.Symbol = user.Search.Symbol;
             search.TimeFrame = user.Search.TimeFrame;
+
+            search.IsFavorite = true;
+            //Need to make different. Just for testing for now
+
             search.UserId = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
             search.Score = scoring.GetStockScore(search)[0];
             //Will return the first in the list of scores

@@ -55,8 +55,7 @@ namespace StockScore.Migrations
                     NumberOne = table.Column<string>(nullable: true),
                     NumberTwo = table.Column<string>(nullable: true),
                     NumberThree = table.Column<string>(nullable: true),
-                    NumberFour = table.Column<string>(nullable: true),
-                    date = table.Column<DateTime>(nullable: false)
+                    NumberFour = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -220,7 +219,8 @@ namespace StockScore.Migrations
                     Symbol = table.Column<string>(nullable: true),
                     Score = table.Column<float>(nullable: false),
                     TimeFrame = table.Column<string>(nullable: true),
-                    StockData = table.Column<string>(nullable: true),
+                    IsForPastScores = table.Column<bool>(nullable: false),
+                    IsFavorite = table.Column<bool>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -258,7 +258,7 @@ namespace StockScore.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "d0015586-2d7c-422b-8fab-87590baccf22", "61dc6d0b-d6ea-417a-bc56-fd65162247ad", "User", "USER" });
+                values: new object[] { "4d645f7d-98fb-4cf7-a68a-6ba16780bc7c", "11430f39-07ea-4c67-b9e9-afc7b5e4232b", "User", "USER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

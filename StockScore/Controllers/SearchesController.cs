@@ -32,11 +32,6 @@ namespace StockScore.Controllers
             model.Id = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
             model.Searches = _context.Searches.Where(s => s.UserId == model.Id).ToList();
             model.Search = _context.Searches.Where(s => s.UserId == model.Id).ToList()[_context.Searches.Count() - 1];
-            //Need the most recent one, not the oldest one
-
-            //Put here something that goes through and does a new seach for the given symbol, but sets the forPrevious or whatever bool to true.
-            //That way it will return the Google results going back in time by week. I think
-
             model.Searches[model.Searches.Count - 1].IsForPastScores = true;
             model.PastMonthScores = scoring.GetStockScore(model.Searches[model.Searches.Count - 1]);
             model.Searches[model.Searches.Count - 1].IsForPastScores = false;
@@ -45,9 +40,9 @@ namespace StockScore.Controllers
             searches = model.Searches;
             model.Searches = new List<Searches>();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5 && i < model.Searches.Count(); i++)
             {
-                model.Searches[i] = searches[i];
+                model.Searches.Add(searches[i]);
             }
 
             if (id != 0)

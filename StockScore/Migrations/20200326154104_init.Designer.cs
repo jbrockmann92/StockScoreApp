@@ -10,7 +10,7 @@ using StockScore.Data;
 namespace StockScore.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200320152319_init")]
+    [Migration("20200326154104_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace StockScore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d0015586-2d7c-422b-8fab-87590baccf22",
-                            ConcurrencyStamp = "61dc6d0b-d6ea-417a-bc56-fd65162247ad",
+                            Id = "4d645f7d-98fb-4cf7-a68a-6ba16780bc7c",
+                            ConcurrencyStamp = "11430f39-07ea-4c67-b9e9-afc7b5e4232b",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -256,11 +256,14 @@ namespace StockScore.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsForPastScores")
+                        .HasColumnType("bit");
+
                     b.Property<float>("Score")
                         .HasColumnType("real");
-
-                    b.Property<string>("StockData")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Symbol")
                         .HasColumnType("nvarchar(max)");
@@ -296,9 +299,6 @@ namespace StockScore.Migrations
 
                     b.Property<string>("NumberTwo")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("date")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
