@@ -107,18 +107,18 @@
             Our Top Recommendations:
         </h3>
         <tr>
-            <td>
-                @Model.top_Stocks.NumberOne
+            <td href="">
+                <a asp-controller="Searches" asp-action="Index" asp-route-stockSymbol="@Model.top_Stocks.NumberOne">@Model.top_Stocks.NumberOne</a>
                 @*Find a way to make these clickable as searches*@
             </td>
             <td>
-                @Model.top_Stocks.NumberTwo
+                <a asp-controller="Searches" asp-action="Index" asp-route-stockSymbol="@Model.top_Stocks.NumberTwo">@Model.top_Stocks.NumberTwo</a>
             </td>
             <td>
-                @Model.top_Stocks.NumberThree
+                <a asp-controller="Searches" asp-action="Index" asp-route-stockSymbol="@Model.top_Stocks.NumberThree">@Model.top_Stocks.NumberThree</a>
             </td>
             <td>
-                @Model.top_Stocks.NumberFour
+                <a asp-controller="Searches" asp-action="Index" asp-route-stockSymbol="@Model.top_Stocks.NumberFour">@Model.top_Stocks.NumberFour</a>
             </td>
             <td>
                 @*Something to search for this stock*@

@@ -50,11 +50,7 @@ namespace StockScore.Controllers
                 //top_Stocks.UserId = userId;
                 _context.Top_Stocks.Add(top_Stocks);
                 await _context.SaveChangesAsync();
-                //Probably don't need to assign this a user, but I will for now
 
-                //By this point, sortedStocks should contain the four strings that are the stock symbols for the highest scoring stocks
-
-                //Store these in the db, then you can grab them by the signed in user's id in the UsersController. Store as Top_Stocks
                 List<string[]> peopleToContact = new List<string[]>();
 
                 for (int i = 0; i < _context.User.Count(); i++)

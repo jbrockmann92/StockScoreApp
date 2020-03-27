@@ -21,7 +21,7 @@ namespace StockScore.Controllers
         }
 
         // GET: Searches
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, string? stockSymbol) //Pass in either and it should work
         {
             UserViewModel model = new UserViewModel();
             Scoring scoring = new Scoring();
@@ -32,9 +32,11 @@ namespace StockScore.Controllers
             model.Id = _context.User.Where(u => u.UserId == userId).FirstOrDefault().Id;
             model.Searches = _context.Searches.Where(s => s.UserId == model.Id).ToList();
             model.Search = _context.Searches.Where(s => s.UserId == model.Id).ToList()[_context.Searches.Count() - 1];
+
             model.Searches[model.Searches.Count - 1].IsForPastScores = true;
             model.PastMonthScores = scoring.GetStockScore(model.Searches[model.Searches.Count - 1]);
             model.Searches[model.Searches.Count - 1].IsForPastScores = false;
+
             model.Searches = model.Searches.OrderByDescending(s => s.Id).ToList();
             model.Searches[0].Score = model.PastMonthScores[0];
             searches = model.Searches;
@@ -43,11 +45,17 @@ namespace StockScore.Controllers
             for (int i = 0; i < 5 && i < searches.Count(); i++)
             {
                 model.Searches.Add(searches[i]);
+                //I think this may be working backwards at the moment
             }
-
-            if (id != 0)
+            
+            if (id != 0 && stockSymbol == null)
             {
                 model.Search = _context.Searches.Where(s => s.Id == id).FirstOrDefault();
+            }
+
+            if (stockSymbol != null)
+            {
+                model.Search.Symbol = stockSymbol;
             }
 
             return View(model);

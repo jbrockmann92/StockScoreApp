@@ -18,7 +18,8 @@ namespace StockScore.Models
         public List<Searches> Searches { get; set; }
         public Top_Stocks top_Stocks { get; set; }
         public List<int> PastMonthScores { get; set; }
-        //Could probably be an array. No real reason to though. More flexible this way
+        public List<int> TopStocksIds { get; set; }
+
         [NotMapped]
         public List<string> TimeFrame = new List<string>() {"Day", "Week", "Month"};
     }
