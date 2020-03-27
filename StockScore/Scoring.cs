@@ -66,7 +66,7 @@ namespace StockScore
                     stockScores[i] = googleScore * stockDirection;
 
                     int oneOrZero = 1;
-                    if (stockScores[i] > stockScores[i + 1])
+                    if (stockScores[i] > stockScores[i + 1] && i % 2 == 0) //after && is just to make things look better temporarily. Take out when you deepen the algorithm
                     {
                         oneOrZero = 0;
                     }
