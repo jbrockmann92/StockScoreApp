@@ -59,11 +59,17 @@
                 <button style="padding-bottom: inherit" type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
+        <hr />
 
         <div id="PerformanceChart" style="width: 1100px; height: 500px"></div>
         @*Some kind of onClick event would be good here that would list all the stocks in the portfolio*@
 
     </center>
+
+    <div style="padding-top: 20px; padding-bottom: 20px">
+        <a asp-controller="User_Stocks" asp-action="Create">Add more stocks to your portfolio</a>
+    </div>
+    <hr />
 
     <table class="table">
         <h2>Your Favorite Searches</h2>
@@ -96,11 +102,7 @@
             </tr>
         }
     </table>
-
-    <div style="padding-top: 20px; padding-bottom: 20px">
-        <a asp-controller="User_Stocks" asp-action="Create">Add more stocks to your portfolio</a>
-    </div>
-
+    <hr />
 
     <table class="table">
         <h3>

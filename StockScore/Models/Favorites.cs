@@ -12,7 +12,9 @@ namespace StockScore.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Stock Symbol")]
         public string StockSymbol { get; set; }
+        [Display(Name = "Time Frame")]
         public string TimeFrame { get; set; }
         //Do they want to buy for a week, month, or year?
 
